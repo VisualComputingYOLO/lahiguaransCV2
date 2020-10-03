@@ -1439,6 +1439,8 @@ input, select, textarea {
 
 		.quote-list li img {
 			float: left;
+			height: 60px;
+			width: 60px;
 		}
 
 		.quote-list li p {
@@ -1612,6 +1614,10 @@ input, select, textarea {
 			line-height: 1.25em;
 			padding-right: 1em;
 			margin: 0 0 1em 0;
+		}
+
+		#banner a {
+			color: white;
 		}
 
 /* Features */

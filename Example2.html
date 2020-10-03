@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>One Column - Halcyonic by HTML5 UP</title>
+		<title>Luis Alejandro Higuaran Serrano | :: Computación Visual ::</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -17,7 +17,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/examples/squareMouse.js"></script>
+		<script src="p5/js/examples/speedMouse.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -37,15 +37,15 @@
 							<div class="col-12">
 
 								<!-- Logo -->
-									<h1><a href="index.html" id="logo">Halcyonic</a></h1>
+									<h1><a href="index.html" id="logo">VISUAL COMPUTING</a></h1>
 
 								<!-- Nav -->
 									<nav id="nav">
-										<a href="index.html">Homepage</a>
-										<a href="threecolumn.html">Three Column</a>
-										<a href="twocolumn1.html">Two Column #1</a>
-										<a href="twocolumn2.html">Two Column #2</a>
-										<a href="onecolumn.html">One Column</a>
+										<a href="index.html">INICIO</a>
+										<a href="Example1.html">EXAMPLES P5.JS</a>
+										<a href="Pixels1.html">PIXELS</a>
+										<a href="Software.html">SOFTWARE P5.JS</a>
+										<a href="Hardware.html">HARDWARE P5.JS</a>
 									</nav>
 
 							</div>
@@ -62,7 +62,7 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2>PATTERBS</h2>
+											<h2>PATTERNS</h2>
 											<h3>PROCESSING EXAMPLES -  P5.JS EXAMPLES</h3>
 										</header>
 										<p>
@@ -73,16 +73,19 @@
 
 										<p>
 											Este programa esta basado en un sketch básico realizado por el sitio web
-											<a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">mywonderland.es</a>, en el lenguaje Processing, con el fin de observar un ejemplo en el
-											que se utilizan las funciones 'mouseX, mouseY'. Crea una ventana con un ancho de 600px y una
-											altura de 400px, y luego empieza a dibujar un cuadrado azul de 50px por 50px según la posición
-											del mouse <img src="images/keyboard/pointer.png" style="width:1.5%;vertical-align: middle"/>
-											al mismo tiempo que el fondo de la ventana se va rellenando de color gris, dando la ilusión que
-											solo existe un cuadrado azul moviéndose por toda la ventana siguiendo al mouse.
+											<a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">mywonderland.es</a>
+											, en el lenguaje Processing, con el fin de observar un ejemplo básico donde el mouse interactúe con el lienzo.
+											Crea una ventana con un ancho de 600px y una altura de 400px, y luego empieza a dibujar elipses de colores
+											aleatorios en la posición donde se encuentre el mouse
+											<img src="images/keyboard/pointer.png" style="width:1.5%;vertical-align: middle"/>
+											al mismo tiempo se ejecuta una función que calcula la velocidad con la que el mouse se mueve de una
+											posición inicial a una posición final y según este valor determinar el tamaño de la elipse.
+
+
 										</p>
 										<div class="canvasp5js" >
 											<div>
-												<div id="squareMouse"></div>												
+												<div id="speedMouse"></div>												
 											</div>
 										</div>
 										<p></p>
@@ -91,18 +94,30 @@
 										<pre>
 											<code class="prettyprint">									
 function setup() { 
-	createCanvas(600, 400);
+	var myCanvas = createCanvas(windowWidth-300, 400);
+	myCanvas.parent('speedMouse');
+	background(210);
 } 
 
-function draw(){ 
-	// Dibuja un nuevo background en cada frame
+function draw() {
+	variableEllipse(mouseX, mouseY, pmouseX, pmouseY);
+}
+
+// El método simple variableEllipse () fue creado específicamente
+// para este programa. Calcula la velocidad del mouse
+// y dibuja una pequeña elipse si el mouse se mueve lentamente
+// y dibuja una elipse grande si el mouse se mueve rápidamente
+
+function variableEllipse(x, y, px, py) {
+	let speed = abs(x - px) + abs(y - py);
+	stroke(speed);
+	fill(random(255),random(255),random(255));
+	ellipse(x, y, speed, speed);
+}
+
+function windowResized() {
+	resizeCanvas(windowWidth-300, 400);
 	background(210);
-	stroke(0);
-	fill(0,0,255);
-	// En modo CENTER, el rectángulo se dibuja en el centro del cursor
-	rectMode(CENTER);
-	// mouseX y mouseY posición del ratón
-	rect(mouseX,mouseY,50,50);
 }
 											</code>
 										</pre>

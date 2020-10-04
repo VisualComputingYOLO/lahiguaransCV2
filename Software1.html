@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 	<head>
 		<title>Luis Alejandro Higuaran Serrano | :: Computación Visual ::</title>
@@ -17,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/examples/squareMouse.js"></script>
+		<script src="p5/js/software/filterGray.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -62,28 +61,44 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">MOUSEX, MOUSEY</a></h2>
-											<h3>PROCESSING EXAMPLES -  P5.JS EXAMPLES</h3>
+											<h2><a href="https://en.wikipedia.org/wiki/HSL_and_HSV" target="_blank">HSL, HSV, HSB & RGB MODEL</a></h2>
+											<h3>PROCESSING & SOFTWARE -  P5.JS</h3>
 										</header>
 										<p>
-											Los siguientes ejemplos tienen el propósito de desarrollar y practicar la transición
-											entre el lenguaje Processing y el lenguaje p5.js observando sus principales diferencias,
-											ya que ambos lenguajes se ven muy similar, y cómo convertir de uno a otro.
+											En la siguiente publicación se pondrá en practica lo aprendido durante el estudio de procesamiento
+											de imágenes en los ejemplos expuestos y desarrollados en
+											<a href="Pixels1.html" target="_blank">PIXELS</a>
+											, donde se observó cómo funciona una matriz de pixeles y cómo modificar los pixeles de una
+											imagen accediendo a los valores de este arreglo.
 										</p>
 
 										<p>
-											Este programa esta basado en un sketch básico realizado por el sitio web
-											<a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">mywonderland.es</a>
-											, en el lenguaje Processing, con el fin de observar un ejemplo en el
-											que se utilizan las funciones 'mouseX, mouseY'. Crea una ventana con un ancho de 600px y una
-											altura de 400px, y luego empieza a dibujar un cuadrado azul de 50px por 50px según la posición
-											del mouse <img src="images/keyboard/pointer.png" style="width:1.5%;vertical-align: middle"/>
-											al mismo tiempo que el fondo de la ventana se va rellenando de color gris, dando la ilusión que
-											solo existe un cuadrado azul moviéndose por toda la ventana siguiendo al mouse.
+											A continuación, se observará cómo se puede obtener una imagen a escala de grises a
+											partir del <em>Promedio</em> de los componentes RGB de una imagen y el caculo del
+											coeficiente <em>Luma</em>. Para ello este estudio esta basado en la documentación
+											<a href="https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness" target="_blank">HSL and HSV</a>
+											y en gran medida estará basado en el ejemplo
+											<a href="Pixels4.html" target="_blank">GRAYSCALE FILTERS</a>
+											anteriormente trabajado, por lo tanto, no se profundizará en los cálculos de las expresiones,
+											sino en la manera de aplicar estas expresiones a nuestro programa en p5.js para modificar
+											la luminancia de la imagen y obtener los resultados esperados.
 										</p>
+
+										<p>
+											Para obtener una imagen a escala de grises por medio del siguiente programa,
+											bastará con acceder al componente RGB de cada pixel de la imagen, hacer el
+											cálculo del <strong>Promedio RGB</strong> o el coeficiente <strong>Luma</strong>
+											utilizando las expresiones descritas en la tabla de Comandos por Teclado y por último
+											se reemplazará el valor obtenido en cada uno de los componentes de color RGB del pixel.
+											Adicionalmente también se observarán otras posibilidades para modificar la luminancia
+											de la imagen y obtener la imagen a escala de grises a partir del calculo del
+											<strong>Componente mas grande</strong>, el <strong>Rango medio</strong> y el
+											<strong>Valor de Munsell</strong> visto en la documentación.
+										</p>
+
 										<div class="canvasp5js" >
 											<div>
-												<div id="squareMouse"></div>												
+												<div id="filterGray"></div>												
 											</div>
 										</div>
 										<p></p>
@@ -91,19 +106,123 @@
 
 										<pre>
 											<code class="prettyprint">									
+let img; // Declarar variable 'img'
+let lightness = 0; // Variable de ligereza
+let gray=0;
+
 function setup() { 
-	createCanvas(600, 400);
+	var myCanvas = createCanvas(1000, 600);
+	myCanvas.parent('filterGray');
+	background(210);
+	pixelDensity();
+	img = loadImage('https://cors-anywhere.herokuapp.com/https://hotelcabreromar.com/wp-content/uploads/2018/04/Cartagena-de-Indias-Cortesi%CC%81a-ProColombia..jpg');
+	var title = 'IMAGEN ORIGINAL';
+	textSize(18);
+	stroke(128,255,255);
+	textStyle(BOLDITALIC);
+	textAlign(CENTER);
 } 
 
-function draw(){ 
-	// Dibuja un nuevo background en cada frame
-	background(210);
-	stroke(0);
-	fill(0,0,255);
-	// En modo CENTER, el rectángulo se dibuja en el centro del cursor
-	rectMode(CENTER);
-	// mouseX y mouseY posición del ratón
-	rect(mouseX,mouseY,50,50);
+function draw() {
+	
+	img.resize(width,0)
+	loadPixels();	
+	img.loadPixels();	
+	
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++){ 
+			let index = (x+y*width)*4; // Posicion del pixel
+			let r=img.pixels[index+0]; // Componente Red
+			let g=img.pixels[index+1]; // Componente Green
+			let b=img.pixels[index+2]; // Componente Blue
+			let a=img.pixels[index+3]; // Componente Alpha
+			
+			if (gray===1){
+				let I=(r+g+b)/3; // Promedio de los tres componentes
+				lightness = I;
+				title = 'MEDIA ARITMÉTICA';
+			} else if (gray===2){
+				let V= max(r,g,b); // Componente mas grande de un color
+				lightness = V;
+				title = 'COMPONENTE MÁS GRANDE';
+			} else if (gray===3){
+				let L=(max(r,g,b)+min(r,g,b))/2; // Promedio entre el componente mas grande y el mas pequeño
+				lightness = L;
+				title = 'RANGO MEDIO';
+			} else if (gray===4){ // Promedio ponderado de RGB con corrección gamma (Luma)
+				let Y601= 0.2989*r + 0.5870*g + 0.1140*b; // SDTV
+				lightness = Y601;
+				title = 'LUMA (SDTV)';
+			} else if (gray===5){ 
+				let Y240= 0.212*r + 0.701*g + 0.087*b; // Adobe
+				lightness = Y240;
+				title = 'LUMA (ADOBE)';
+			} else if (gray===6){ 
+				let Y709= 0.2126*r + 0.7152*g + 0.0722*b; // HDTV
+				lightness = Y709;
+				title = 'LUMA (HDTV)';
+			} else if (gray===7){ 
+				let Y2020= 0.2627*r + 0.6780*g + 0.0593*b; // UHDTV,HDR
+				lightness = Y2020;
+				title = 'LUMA (UHDTV, HDR)';
+			} else if (gray===11){ 
+				let V= 10*sqrt(r); // Munsell Rojo
+				lightness = V;
+				title = 'MUNSELL (ROJO)'
+			} else if (gray===12){ 
+				let V= 10*sqrt(g); // Munsell Verde
+				lightness = V;
+				title = 'MUNSELL (VERDE)'
+			} else if (gray===13){ 
+				let V= 10*sqrt(b); // Munsell Azul
+				lightness = V;
+				title = 'MUNSELL (AZUL)'
+			}
+									
+			pixels[index+0] = lightness;
+			pixels[index+1] = lightness;
+			pixels[index+2] = lightness;
+			pixels[index+3] = a;
+			
+			if (gray===0){ // Imagen original
+				pixels[index+0] = r;
+				pixels[index+1] = g;
+				pixels[index+2] = b;
+				pixels[index+3] = a;
+				title = 'IMAGEN ORIGINAL';
+			}
+		}
+	}
+	updatePixels();
+	image(img, 12, 12, img.width * (250 / img.width), img.height * (250 / img.width));
+	text(title, width/2, 20);
+}
+
+// Se ejecuta cuando se presiona cualquier tecla
+function keyPressed() {
+	if (key === '0') {
+	gray = 0;
+	} else if (key === '1') { 
+	gray = 1;
+	} else if (key === '2') {
+	gray = 2;
+	} else if (key === '3') {
+	gray = 3;
+	} else if (key === '4') {
+	gray = 4;
+	} else if (key === '5') {
+	gray = 5;
+	} else if (key === '6') {
+	gray = 6;
+	} else if (key === '7') {
+	gray = 7;
+	} else if (key === 'r') {
+	gray = 11;
+	} else if (key === 'g') {
+	gray = 12;
+	} else if (key === 'b') {
+	gray = 13;
+	}  
 }
 											</code>
 										</pre>

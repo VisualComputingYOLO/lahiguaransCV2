@@ -1678,6 +1678,11 @@ input, select, textarea {
 			margin: 0 0 2em 0;
 		}
 
+		#content strong {
+			text-decoration: none;
+			color: #ED391B;
+		}
+
 		#content .quote-list li {
 			border-bottom: solid 1px #e2e6e8;
 		}

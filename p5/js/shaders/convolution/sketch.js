@@ -11,8 +11,8 @@ let angle=0;
 let mask = 0;
 
 function preload(){
-  img = loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Two_american_alligators.jpg/640px-Two_american_alligators.jpg');
-  video = createVideo('https://dm0qx8t0i9gc9.cloudfront.net/previews/video/YSvEcxy/videoblocks-alligators-eye-close-up-of-a-live-alligators-eye-crocodile-caiman-dinosaur-monster_rmlq8ertq__cb8b5c0c7799d4c97439ed0d1d639f09__P360.mp4');
+  img = loadImage('https://cors-anywhere.herokuapp.com/https://static01.nyt.com/images/2020/02/03/nyregion/02Vessel/merlin_166181697_6dcd4f16-14d5-483f-b444-aa71b4a46927-superJumbo.jpg');
+  video = createVideo('https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/SIRLXoNEXjjzpme6v/videoblocks-new-york-usa-may-9-2019-vessel-architect-thomas-heatherwick-hudson-yards-staircase-at-the-hudson-yards-district-in-manhattan-on-sunny-summer-day-focus-on-vessel-time-lapse-view_sd1crxpns__bf864ad2adc2b126d88b09971b631298__P360.mp4');
   video.hide();
   // Cargar los shaders
   theShader = loadShader('texture.vert','texture.frag');

@@ -7,7 +7,7 @@ var lienzo01;
 var lienzo02;
 
 var heightI = 600;
-var widthI = 450;
+var widthI = 1000;
 
 let redC=0;
 let greenC=0;
@@ -17,46 +17,38 @@ let blueC=0;
 var hist = new Array(256);
 
 function preload() {
-    img_01 = loadImage("https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Amphiprion_ocellaris_at_Gilli_Banta.JPG/450px-Amphiprion_ocellaris_at_Gilli_Banta.JPG");
-    img_02 = loadImage("https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Amphiprion_ocellaris_at_Gilli_Banta.JPG/450px-Amphiprion_ocellaris_at_Gilli_Banta.JPG");
+    img_01 = loadImage('https://cors-anywhere.herokuapp.com/https://viajes.nationalgeographic.com.es/medio/2019/04/10/istock-686026812_b0758d23_1280x720.jpg');
+    img_02 = loadImage('https://cors-anywhere.herokuapp.com/https://viajes.nationalgeographic.com.es/medio/2019/04/10/istock-686026812_b0758d23_1280x720.jpg');
 }
 
 function setup() {
-    var myCanvas = createCanvas(widthI*2, heightI);
+    var myCanvas = createCanvas(widthI, heightI);
     myCanvas.parent('histogram');
     background(255);
     noStroke();
-
-    lienzo01 = createGraphics(widthI,heightI);
-    lienzo02 = createGraphics(widthI,heightI);
 
     calcHis();    
 }
 
 function draw() {
     drawHis();
-    drawLienzo01();
-    image(lienzo01,0,0);
-    image(lienzo02, widthI+5, 0);
-}
-
-function drawLienzo01(){
-    lienzo01.image(img_02, 0, 0);
-    lienzo01.noStroke();
+    img_02.resize(width / 2,0);
+    image(img_02, 0, 0);
 }
 
 //Calcula los valores del histograma.
 function calcHis(){
     //img.filter(GRAY);
-    image(img_02, 0, 0);
-    for (i = 0; i <= 256; i++) {
+    img_02.resize(width / 2,0);
+    image(img_02,0,0);
+    for (i = 0; i < 256; i++) {
         hist[i] = 0
     }
 
     // Calculate the histogram
     for (var i = 0; i < img_02.width; i++) {
         for (var j = 0; j < img_02.height; j++) {
-            var bright = int(brightness(get(i, j)));
+            var bright = int(brightness(img_02.get(i, j)));
             hist[bright]++; 
         }
     }
@@ -65,13 +57,15 @@ function calcHis(){
 // Dibuja los histogramas
 function drawHis(){
     histMax = max(hist);
-    lienzo02.background(255);
-    lienzo02.stroke(0,0,255);    
-
-    for (var i = 0; i < 2.5*img_02.width; i += 3) {
-        var which = int(map(i, 0, 2.5*widthI, 0, 255));
-        var y = int(map(hist[which], 0, histMax, img_02.height, img_02.height-500));
-        lienzo02.line(i, img_02.height, i, y);
+    background(255,255,255);
+    stroke(0,0,255);
+    print("asda: " + hist.length);
+    for (var i = 0; i <= maxRange; i++) {
+        var index = hist[i];
+        var y1 = int(map(index, 0, max(hist), height/2, 0));
+        var y2 = height/2;
+        var xPos = map(i,0,maxRange, width/2, width);
+        line(xPos, y2, xPos, y1);
     }
 }
 
@@ -125,7 +119,7 @@ function convolutionAux(x, y, matrix, matrixsize, img){
 
 function complementary(){	
     regresar();
-    
+    img_02.resize(width / 2,0);
     img_02.loadPixels();
 
     for(var y = 0 ; y < heightI; y++) {
@@ -142,7 +136,7 @@ function complementary(){
 
 function filtrosBlancoNegro(gray){
     let lightness = 210;
-
+    img_02.resize(width / 2,0);
     img_02.loadPixels();
 
 	for (let y = 0; y < img_02.height; y++) {
@@ -294,6 +288,8 @@ function keyPressed(){
 }
 
 function regresar(){
+    img_02.resize(width / 2,0);
+    img_01.resize(width / 2,0);
     img_02.loadPixels();
     img_01.loadPixels();
 

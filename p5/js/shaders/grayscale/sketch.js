@@ -11,8 +11,8 @@ let angle=0;
 let gray = 0;
 
 function preload(){
-  img = loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Hawaii_turtle_2.JPG/640px-Hawaii_turtle_2.JPG');
-  video = createVideo('https://d2v9y0dukr6mq2.cloudfront.net/video/preview/GTYSdDW/divers-watching-sea-turtle-swim-through-coral-reef_zksb-usls__PMNW.mp4');
+  img = loadImage('https://cors-anywhere.herokuapp.com/https://www.discoverlosangeles.com/sites/default/files/styles/hero/public/images/2019-03/PoTD031119-Panoramic-philsutphin-es.JPG?itok=--7rzE7Q');
+  video = createVideo('https://dm0qx8t0i9gc9.cloudfront.net/watermarks/video/GTYSdDW/videoblocks-cinematic-urban-aerial-timelapse-of-downtown-los-angeles-skyline-with-freeway-traffic_s1cltmjfg__989600fed103910ac53c4d041caf498d__P360.mp4');
   video.hide();
   // Cargar los shaders
   theShader = loadShader('texture.vert','texture.frag');

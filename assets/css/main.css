@@ -1557,11 +1557,14 @@ input, select, textarea {
 		box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.15);
 		margin: 0 0 1.5em 0;
 		outline: 0;
+		height: 40vh;
+		width: 100%;
 	}
 
 		.bordered-feature-image img {
-			display: block;
+			height: 100%;
 			width: 100%;
+			object-fit: cover;
 		}
 
 	.pagination {

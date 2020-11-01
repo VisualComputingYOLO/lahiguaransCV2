@@ -16,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/illusions/ebbinghaus.js"></script>
+		<script src="p5/js/illusions/kanizsa.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -61,29 +61,46 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://es.wikipedia.org/wiki/Ilusi%C3%B3n_de_Ebbinghaus" target="_blank">EBBINGHAUS ILLUSION</a></h2>
+											<h2><a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">KANIZSA ILLUSION</a></h2>
 											<h3>OPTICAL ILLUSIONS -  P5.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://es.wikipedia.org/wiki/Ilusi%C3%B3n_de_Ebbinghaus" target="_blank">Ilusión de Ebbinghaus</a>.
+											<a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">Ilusión de Kanizsa</a>.
 										</p>
 
 										<p>
-											La <strong>Ilusión de Ebbinghaus</strong> es una ilusión óptica que altera
-											la percepción de
-											las dimensiones elatrivas. En la versión más conocida de la ilusión, dos
-											círculos de la misma medida son colocados cercanos uno a otro y son
-											circundados, uno por círculos de un tamaño mayor y el otro por círculos 
-											de menor tamaño; el primer círculo central parecerá más pequeño que el otro.
+											La ilusión del <strong>Triángulo de Kanizsa</strong> nos hace darnos cuenta de la forma
+											en que funcionan nuestros sistemas visuales, que no notamos en nuestra
+											experiencia diaria. Al mirar la figura, la mayoría de la gente tendrá
+											la experiencia visual de un contorno de brillo aparente que define un
+											triángulo vertical que ocluye tres discos negros y un segundo triángulo
+											invertido delineado en negro. Por supuesto, estos triángulos de hecho
+											no existen, y no estamos percibiendo discos ocluidos sino más bien
+											fragmentos de discos parecidos a 'Pac-Man'. ('Pacmen' es ahora la
+											nomenclatura estándar para tales elementos inductores). Un relleno
+											ilusorio similar'de color que experimentamos en el triángulo vertical,
+											de modo que la figura aparece llena de un blanco sólido que es más
+											brillante que el resto de la figura, también es muy evidente en el
+											cuadrado de Kanizsa. Tenga en cuenta que tanto el triángulo
+											de Kanizsa como el cuadrado de Kanizsa crean una ilusión de profundidad:
+											la figura central parece sentarse en un plano más alto que el pacmen
+											inductor (o el triángulo ocluido que apunta hacia abajo).
 										</p>
 
+										<div class="text-center">
+											<img src="images/35_kanizsa_main.png" style="height: 220px;vertical-align: middle"/>
+										</div>
+
 										<p>
-											Es denominada así en honor a su descubridor, el psícólogo alemán
-											<a href="https://es.wikipedia.org/wiki/Hermann_Ebbinghaus" target="_blank">Hermann Ebbinghaus</a>
-											(1850-1909) fue popularizada en el mundo de habla inglesa por
-											Titchener en un libro de texto sobre psicología experimental de año 1901,
-											de ahí que su nombre alternativo sea "Círculos de Titchener".
+											Es denominada así en honor a su descubridor, el artista y psícólogo italiano
+											<a href="https://en.wikipedia.org/wiki/Gaetano_Kanizsa" target="_blank">Gaetano Kanizsa</a>
+											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
+											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
+											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
+											impresión de que surgen manchas "fantasmas" en las intersecciones de 
+											las líneas. Las manchas desaparecen cuando se observa directamente la
+											 intersección. Eso explica por qué se ven puntos en la intersección.
 										</p>
 
 										<p>
@@ -105,11 +122,11 @@
 												<tbody>
 													<tr>
 														<td><img src="images/keyboard/0.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Activar Circulos</td>
+														<td>Detener movimiento</td>
 													</tr>
 													<tr>
 														<td><img src="images/keyboard/1.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Desactivar Circulos</td>
+														<td>Activar movimiento</td>
 													</tr>										
 												</tbody>
 											</table>
@@ -117,7 +134,7 @@
 
 										<div class="canvasp5js" >
 											<div>
-												<div id="ebbinghaus"></div>												
+												<div id="kanizsa"></div>												
 											</div>
 										</div>
 										<p></p>
@@ -127,10 +144,12 @@
 											<code class="prettyprint">									
 let opa = 255;
 let radio = 50;
+let angle = 0;
+let change = 0;
 
 function setup() {
 	var myCanvas = createCanvas(1000, 600);
-	myCanvas.parent('ebbinghaus');
+	myCanvas.parent('kanizsa');
 }
 
 
@@ -141,73 +160,107 @@ function draw() {
 
 function illusion() {
 	push();
-	translate( (width / 4) + 50 , height / 2);
+	translate( 320 , 160);
 	uno();
 	pop();
 	push();
-	translate( (width / 4) * 3  , height / 2);
+	translate( 610 , 160);
 	dos();
 	pop();
+	push();
+	translate( 610 , 450);
+	uno();
+	pop();
+	push();
+	translate( 320 , 450);
+	dos();
+	pop();
+	angle += change;
 }  
 
 function uno() {
-	center();
-	var an = (PI / 3);
+	
 	var i;
-	for(i = 0; i < 6; i++){
+	var j;
+	var c = 0;
+	for(i = -70; i <= 70; i+=140){
+	for(j = -70; j <= 70; j+=140){
 		push();
-		translate(p5.Vector.fromAngle(i * an, 3.5 * radio));
-		exterior1();
+		translate(j,i);
+		if(c == 0){
+		rotate(HALF_PI * 0 + angle);
+		center();
+		} else if(c == 1){
+		rotate(HALF_PI * 1 - angle);
+		center();
+		} else if(c == 2){
+		rotate(HALF_PI * 3 - angle);
+		center();
+		} else if(c == 3){
+		rotate(HALF_PI * 2 + angle);
+		center();
+		}
 		pop();
+		c++;
+	}
 	}
 }
 
 function dos() {
-	center();
-	var an = ( 2 * PI / 8);
+	
 	var i;
-	for(i = 0; i < 8; i++){
+	var j;
+	var c = 0;
+	for(i = -70; i <= 70; i+=140){
+	for(j = -70; j <= 70; j+=140){
 		push();
-		translate(p5.Vector.fromAngle(i * an, 2 * radio));
-		exterior2();
+		translate(j,i);
+		if(c == 0){
+		rotate(HALF_PI * 2 - angle);
+		center2();
+		} else if(c == 1){
+		rotate(HALF_PI * 3 + angle);
+		center2();
+		} else if(c == 2){
+		rotate(HALF_PI * 1 + angle);
+		center2();
+		} else if(c == 3){
+		rotate(HALF_PI * 0 - angle);
+		center2();
+		}
 		pop();
+		c++;
+	}
 	}
 }
 
 function center(){
-	ellipseMode(RADIUS);
-	noStroke();
-	fill('yellow');
-	ellipse(0,0,radio,radio);
+	stroke('yellow');
+	strokeWeight(5);
+	fill('red');
+	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
 }
 
-function exterior1(){
-	ellipseMode(RADIUS);
-	noStroke();
-	fill(155, 0, 215, opa);
-	ellipse(0,0,1.5 * radio,1.5 * radio);
-}
-
-function exterior2(){
-	ellipseMode(RADIUS);
-	noStroke();
-	fill(155, 0, 215, opa);
-	ellipse(0,0,0.5 * radio, 0.5 * radio);
+function center2(){
+	stroke('yellow');
+	strokeWeight(5);
+	fill('green');
+	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
 }
 
 function keyPressed() {
 	if (key === '0') {
-	opa = 255;
+	change = 0;
 	} else if (key === '1') { 
-	opa = 0;
+	change = 0.005;
 	}
 }
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="" class="button-large disable">Previous Page</a>
-											<a href="Ilussion2.html" target="_parent" class="button-large">Next Page</a>
+											<a href="Ilussion2.html" class="button-large disable">Previous Page</a>
+											<a href="Software2.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>
 							</div>

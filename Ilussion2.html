@@ -16,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/illusions/ebbinghaus.js"></script>
+		<script src="p5/js/illusions/grid.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -61,29 +61,38 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://es.wikipedia.org/wiki/Ilusi%C3%B3n_de_Ebbinghaus" target="_blank">EBBINGHAUS ILLUSION</a></h2>
+											<h2><a href="https://www.illusionsindex.org/i/scintillating-grid" target="_blank">SCINTILLATING GRID ILLUSION</a></h2>
 											<h3>OPTICAL ILLUSIONS -  P5.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://es.wikipedia.org/wiki/Ilusi%C3%B3n_de_Ebbinghaus" target="_blank">Ilusión de Ebbinghaus</a>.
+											<a href="https://www.illusionsindex.org/i/scintillating-grid" target="_blank">Ilusión de la Rejilla centelleante</a>.
 										</p>
 
 										<p>
-											La <strong>Ilusión de Ebbinghaus</strong> es una ilusión óptica que altera
-											la percepción de
-											las dimensiones elatrivas. En la versión más conocida de la ilusión, dos
-											círculos de la misma medida son colocados cercanos uno a otro y son
-											circundados, uno por círculos de un tamaño mayor y el otro por círculos 
-											de menor tamaño; el primer círculo central parecerá más pequeño que el otro.
+											La rejilla centelleante es una ilusión de contraste de luminosidad
+											simultánea de un tipo similar a la <strong>Rejilla de Hermann.</strong>, aunque fue
+											descubierto más de un siglo después por JR Bergen (1985) (como se
+											informa en Schrauf et al. (1997)). Una diferencia importante es que
+											la figura de la cuadrícula centelleante comprende puntos blancos en
+											 la intersección de las líneas de cuadrícula grises sobre un fondo 
+											 negro, mientras que no hay tales puntos en la cuadrícula de Hermann,
+											  por lo que cualquier punto que pueda aparecer dentro de la 
+											  cuadrícula de Hermann son puramente artefactos de la cuadrícula 
+											  de Hermann. sistema visual. En resumen, los puntos en la cuadrícula 
+											  centelleante están realmente allí; solo a veces se los experimenta
+											   como negros cuando en realidad son blancos.
 										</p>
 
 										<p>
-											Es denominada así en honor a su descubridor, el psícólogo alemán
-											<a href="https://es.wikipedia.org/wiki/Hermann_Ebbinghaus" target="_blank">Hermann Ebbinghaus</a>
-											(1850-1909) fue popularizada en el mundo de habla inglesa por
-											Titchener en un libro de texto sobre psicología experimental de año 1901,
-											de ahí que su nombre alternativo sea "Círculos de Titchener".
+											Es denominada así en honor a su descubridor, el psícólogo americano
+											<a href="https://en.wikipedia.org/wiki/Stanley_S._Bergen_Jr." target="_blank">Stanley S. Bergen Jr.</a>
+											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
+											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
+											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
+											impresión de que surgen manchas "fantasmas" en las intersecciones de 
+											las líneas. Las manchas desaparecen cuando se observa directamente la
+											 intersección. Eso explica por qué se ven puntos en la intersección.
 										</p>
 
 										<p>
@@ -105,11 +114,11 @@
 												<tbody>
 													<tr>
 														<td><img src="images/keyboard/0.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Activar Circulos</td>
+														<td>Rejilla de Bergen</td>
 													</tr>
 													<tr>
 														<td><img src="images/keyboard/1.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Desactivar Circulos</td>
+														<td>Rejilla de Hermann</td>
 													</tr>										
 												</tbody>
 											</table>
@@ -117,7 +126,7 @@
 
 										<div class="canvasp5js" >
 											<div>
-												<div id="ebbinghaus"></div>												
+												<div id="grid"></div>												
 											</div>
 										</div>
 										<p></p>
@@ -125,89 +134,94 @@
 
 										<pre>
 											<code class="prettyprint">									
+let radio = 10;
+let ancho = 10;
+let gris = 150;
 let opa = 255;
-let radio = 50;
 
 function setup() {
 	var myCanvas = createCanvas(1000, 600);
-	myCanvas.parent('ebbinghaus');
+	myCanvas.parent('grid');
 }
 
 
 function draw() {
-	background(220);
+	background(0);
 	illusion();
 }
 
 function illusion() {
 	push();
-	translate( (width / 4) + 50 , height / 2);
-	uno();
+	lineas();
 	pop();
 	push();
-	translate( (width / 4) * 3  , height / 2);
-	dos();
+	puntos();
 	pop();
 }  
 
-function uno() {
-	center();
-	var an = (PI / 3);
+function lineas() {
 	var i;
-	for(i = 0; i < 6; i++){
+	for(i = 0; i < width; i+=50){
 		push();
-		translate(p5.Vector.fromAngle(i * an, 3.5 * radio));
-		exterior1();
+		translate(i, 0);
+		vertical();
+		pop();
+	}
+	for(i = 0; i < height; i+=50){
+		push();
+		translate(0, i);
+		horizontal();
 		pop();
 	}
 }
 
-function dos() {
-	center();
-	var an = ( 2 * PI / 8);
-	var i;
-	for(i = 0; i < 8; i++){
+function puntos() {
+	var m;
+	var n;
+	for(m = 0; m <= width; m+=50){
+		for(n = 0; n <= height; n+=50){
 		push();
-		translate(p5.Vector.fromAngle(i * an, 2 * radio));
-		exterior2();
+		translate(m, n);
+		center();
 		pop();
+		}
 	}
 }
 
 function center(){
 	ellipseMode(RADIUS);
 	noStroke();
-	fill('yellow');
+	fill(255,255,255,opa);
 	ellipse(0,0,radio,radio);
 }
 
-function exterior1(){
-	ellipseMode(RADIUS);
-	noStroke();
-	fill(155, 0, 215, opa);
-	ellipse(0,0,1.5 * radio,1.5 * radio);
+function vertical(){
+	stroke(gris);
+	strokeWeight(ancho);
+	line(0,0,0,height);
 }
 
-function exterior2(){
-	ellipseMode(RADIUS);
-	noStroke();
-	fill(155, 0, 215, opa);
-	ellipse(0,0,0.5 * radio, 0.5 * radio);
+function horizontal(){
+	stroke(gris);
+	strokeWeight(ancho);
+	line(0,0,width,0);
 }
 
 function keyPressed() {
 	if (key === '0') {
 	opa = 255;
+	gris = 150;
 	} else if (key === '1') { 
 	opa = 0;
+	gris = 255;
 	}
 }
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="" class="button-large disable">Previous Page</a>
-											<a href="Ilussion2.html" target="_parent" class="button-large">Next Page</a>
+											<a href="Ilussion1.html" class="button-large">Previous Page</a>
+											<a href="Ilussion3.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>
 							</div>

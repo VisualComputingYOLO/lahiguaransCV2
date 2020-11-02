@@ -9,6 +9,7 @@
 		<!-- Code-Prettify -->
 		<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
+<<<<<<< HEAD
 		<!-- P5.js -->
 		<script src="p5/p5.min.js"></script>
 		<script src="p5/addons/p5.sound.min.js"></script>
@@ -17,6 +18,11 @@
 
 		<!-- Ejemplos P5.js -->
 		<script src="p5/js/illusions/kanizsa.js"></script>
+=======
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
+		<script type="module" src="three/js/penrose_triangle.js"></script>
+>>>>>>> bee7c48418ef6aa2fdbd5656fb31af3ec4c61f79
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -24,7 +30,10 @@
 		<!-- Favicon -->
 		<link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> bee7c48418ef6aa2fdbd5656fb31af3ec4c61f79
 	</head>
 	<body class="subpage">
 		<div id="page-wrapper">
@@ -61,6 +70,7 @@
 								<!-- Main Content -->
 									<section>
 										<header>
+<<<<<<< HEAD
 											<h2><a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">KANIZSA ILLUSION</a></h2>
 											<h3>OPTICAL ILLUSIONS -  P5.JS</h3>
 										</header>
@@ -101,10 +111,36 @@
 											impresión de que surgen manchas "fantasmas" en las intersecciones de 
 											las líneas. Las manchas desaparecen cuando se observa directamente la
 											 intersección. Eso explica por qué se ven puntos en la intersección.
+=======
+											<h2><a href="https://es.wikipedia.org/wiki/Tri%C3%A1ngulo_de_Penrose" target="_blank">TRIANGULO DE PENROSE</a></h2>
+											<h3>OPTICAL ILLUSIONS -  THREE.JS</h3>
+										</header>
+										<p>
+											En la siguiente publicación se vera el desarrollo de la 
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Triangulo de penrose</a>.
+										</p>
+
+										<p>
+											El <strong>Triángulo de Penrose</strong> es un objeto imposible que fue creado en 
+											1934 por el artista sueco Oscar Reutersvärd. Posteriormente fue redescubierto de 
+											forma independiente por el físico Roger Penrose, en la década de los 1950,
+											 quien lo hizo popular, describiéndolo como "imposibilidad en su forma más pura".1​ 
+											 Aparece de forma destacada en las obras del artista M. C. Escher, 
+											 hasta el punto que fue parcialmente inspirado por sus primeras imágenes de objetos imposibles.
+											  El término puede referirse tanto al objeto imposible como a su representación bidimensional.
+											
+										</p>
+										<p>
+											Lógicamente, el triángulo de Penrose, no es un triángulo como imaginamos. 
+											En verdad lo que hace es representar las tres caras del cubo, pero cuando lo 
+											vemos desde un ángulo determinado, genera una ilusión. Existen más figuras de este tipo, 
+											pero quizá este triángulo es la que ha terminado por ser más conocida.
+>>>>>>> bee7c48418ef6aa2fdbd5656fb31af3ec4c61f79
 										</p>
 
 										<p>
 											Agradecemos a
+<<<<<<< HEAD
 											<a href="https://medium.com/@naziafakhruddin" target="_blank">Nazia Fakhruddin</a>
 											por las bases para este trabajo.
 										</p>
@@ -255,6 +291,108 @@ function keyPressed() {
 	change = 0.005;
 	}
 }
+=======
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Zach Goldstein</a>
+											por las bases para este trabajo.
+										</p>
+
+										<div id="canvasthreejs" >
+											<div>
+												<canvas id="c"></canvas>												
+											</div>
+										</div>
+										<p></p>
+										<h4>threejs Code</h4>
+
+										<pre>
+											<code class="prettyprint">									
+function main() {
+	// Step 4 - Make it move!
+	// - Combine geometry into one group
+	// - Animate the group's rotation
+	// Asignación de la escena donde estaran alojados los objetos para la ilusión
+	let scene = new THREE.Scene();
+	// El tamaño del objeto en la imagen renderizada se mantiene constante sin importar la distancia de la camara
+	let camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000);
+	camera.position.set(500, 500, 500)
+	camera.lookAt(scene.position);
+
+	// Add our renderer
+	// Se usa WebGL
+	// WebGLRenderer: motor de rasterización
+	let renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer.setSize(window.innerWidth, window.innerHeight)
+	document.body.appendChild(renderer.domElement);
+
+
+	// Superficie de lambert 
+	// Refleja la energía incidente desde una dirección igual en todas las direcciones, al variar el punto de vista, la luminicencia
+	// no cambia
+	
+	let material = new THREE.MeshLambertMaterial({ color: "lightgrey", flatShading: true })
+
+	// Clase geométrica para un cubo rectangular
+	// Es centrado en el origen
+	// Se asigna la figura a una clase que la representa por sus vertices, aristas y caras
+	// Polygon mesh
+
+	let bottomBox = new THREE.BoxGeometry(50, 50, 300)
+	let bottomMesh = new THREE.Mesh(bottomBox, material)
+
+	let upBox = new THREE.BoxGeometry(50, 300, 50)
+	let upMesh = new THREE.Mesh(upBox, material)
+	upMesh.position.set(0, 125, 125)
+
+	let topBox = new THREE.BoxGeometry(150, 50, 50)
+	let topMesh = new THREE.Mesh(topBox, material)
+	topMesh.position.set(100, 250, 125)
+
+	// Generación de figura plana
+
+	let topPlane = new THREE.PlaneGeometry(50, 50, 32)
+	let topPlaneMesh = new THREE.Mesh(topPlane, material)
+	topPlaneMesh.position.set(200, 275, 125)
+	topPlaneMesh.rotation.x = THREE.Math.degToRad(-90)
+
+	let topTriGeometry = new THREE.Geometry()
+	topTriGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 50, 0))
+	topTriGeometry.faces.push(new THREE.Face3(0, 1, 2))
+	topTriGeometry.computeFaceNormals()
+
+	let topTriMesh = new THREE.Mesh(topTriGeometry, material)
+	topTriMesh.position.set(225, 275, 150)
+	topTriMesh.rotation.z = THREE.Math.degToRad(180)
+
+	let group = new THREE.Group()
+	group.add(bottomMesh)
+	group.add(upMesh)
+	group.add(topMesh)
+	group.add(topPlaneMesh)
+	group.add(topTriMesh)
+	scene.add(group)
+
+	// Animate our group's y rotation
+	let tl = new TimelineMax({ repeat: -1, repeatDelay: 0.5 });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(360), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(0), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	scene.add(group)
+
+	// Add a light!
+	let light = new THREE.DirectionalLight(0xffffff, 1.8);
+	light.position.set(60, 100, 20);
+	scene.add(light);
+
+	let render = function () {
+		requestAnimationFrame(render);
+		renderer.render(scene, camera);
+	}
+	render();
+}
+
+main();
+>>>>>>> bee7c48418ef6aa2fdbd5656fb31af3ec4c61f79
 											</code>
 										</pre>
 										<!-- Pagination -->

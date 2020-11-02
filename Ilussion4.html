@@ -1,3 +1,4 @@
+  
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -9,14 +10,9 @@
 		<!-- Code-Prettify -->
 		<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
-		<!-- P5.js -->
-		<script src="p5/p5.min.js"></script>
-		<script src="p5/addons/p5.sound.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
-
-		<!-- Ejemplos P5.js -->
-		<script src="p5/js/illusions/kanizsa.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
+		<script type="module" src="three/js/penrose_triangle.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -60,206 +56,139 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">KANIZSA ILLUSION</a></h2>
-											<h3>OPTICAL ILLUSIONS -  P5.JS</h3>
+											<h2><a href="https://es.wikipedia.org/wiki/Tri%C3%A1ngulo_de_Penrose" target="_blank">TRIANGULO DE PENROSE</a></h2>
+											<h3>OPTICAL ILLUSIONS -  THREE.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">Ilusión de Kanizsa</a>.
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Triangulo de penrose</a>.
 										</p>
 
 										<p>
-											La ilusión del <strong>Triángulo de Kanizsa</strong> nos hace darnos cuenta de la forma
-											en que funcionan nuestros sistemas visuales, que no notamos en nuestra
-											experiencia diaria. Al mirar la figura, la mayoría de la gente tendrá
-											la experiencia visual de un contorno de brillo aparente que define un
-											triángulo vertical que ocluye tres discos negros y un segundo triángulo
-											invertido delineado en negro. Por supuesto, estos triángulos de hecho
-											no existen, y no estamos percibiendo discos ocluidos sino más bien
-											fragmentos de discos parecidos a 'Pac-Man'. ('Pacmen' es ahora la
-											nomenclatura estándar para tales elementos inductores). Un relleno
-											ilusorio similar'de color que experimentamos en el triángulo vertical,
-											de modo que la figura aparece llena de un blanco sólido que es más
-											brillante que el resto de la figura, también es muy evidente en el
-											cuadrado de Kanizsa. Tenga en cuenta que tanto el triángulo
-											de Kanizsa como el cuadrado de Kanizsa crean una ilusión de profundidad:
-											la figura central parece sentarse en un plano más alto que el pacmen
-											inductor (o el triángulo ocluido que apunta hacia abajo).
+											El <strong>Triángulo de Penrose</strong> es un objeto imposible que fue creado en 
+											1934 por el artista sueco Oscar Reutersvärd. Posteriormente fue redescubierto de 
+											forma independiente por el físico Roger Penrose, en la década de los 1950,
+											 quien lo hizo popular, describiéndolo como "imposibilidad en su forma más pura".1​ 
+											 Aparece de forma destacada en las obras del artista M. C. Escher, 
+											 hasta el punto que fue parcialmente inspirado por sus primeras imágenes de objetos imposibles.
+											  El término puede referirse tanto al objeto imposible como a su representación bidimensional.
+											
 										</p>
-
-										<div class="text-center">
-											<img src="images/35_kanizsa_main.png" style="height: 220px;vertical-align: middle"/>
-										</div>
-
 										<p>
-											Es denominada así en honor a su descubridor, el artista y psícólogo italiano
-											<a href="https://en.wikipedia.org/wiki/Gaetano_Kanizsa" target="_blank">Gaetano Kanizsa</a>
-											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
-											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
-											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
-											impresión de que surgen manchas "fantasmas" en las intersecciones de 
-											las líneas. Las manchas desaparecen cuando se observa directamente la
-											 intersección. Eso explica por qué se ven puntos en la intersección.
+											Lógicamente, el triángulo de Penrose, no es un triángulo como imaginamos. 
+											En verdad lo que hace es representar las tres caras del cubo, pero cuando lo 
+											vemos desde un ángulo determinado, genera una ilusión. Existen más figuras de este tipo, 
+											pero quizá este triángulo es la que ha terminado por ser más conocida.
 										</p>
 
 										<p>
 											Agradecemos a
-											<a href="https://medium.com/@naziafakhruddin" target="_blank">Nazia Fakhruddin</a>
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Zach Goldstein</a>
 											por las bases para este trabajo.
 										</p>
 
-										<h4>Comandos</h4>
-
-										<div class="table-wrapper text-center">
-											<table>
-												<thead>
-													<tr>
-														<th>TECLA</th>
-														<th>INTERACTIVIDAD</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td><img src="images/keyboard/0.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Detener movimiento</td>
-													</tr>
-													<tr>
-														<td><img src="images/keyboard/1.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Activar movimiento</td>
-													</tr>										
-												</tbody>
-											</table>
-										</div>
-
-										<div class="canvasp5js" >
+										<div id="canvasthreejs" >
 											<div>
-												<div id="kanizsa"></div>												
+												<canvas id="c"></canvas>												
 											</div>
 										</div>
 										<p></p>
-										<h4>p5*js Code</h4>
+										<h4>threejs Code</h4>
 
 										<pre>
 											<code class="prettyprint">									
-let opa = 255;
-let radio = 50;
-let angle = 0;
-let change = 0;
+function main() {
+	// Step 4 - Make it move!
+	// - Combine geometry into one group
+	// - Animate the group's rotation
+	// Asignación de la escena donde estaran alojados los objetos para la ilusión
+	let scene = new THREE.Scene();
+	// El tamaño del objeto en la imagen renderizada se mantiene constante sin importar la distancia de la camara
+	let camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000);
+	camera.position.set(500, 500, 500)
+	camera.lookAt(scene.position);
 
-function setup() {
-	var myCanvas = createCanvas(1000, 600);
-	myCanvas.parent('kanizsa');
-}
+	// Add our renderer
+	// Se usa WebGL
+	// WebGLRenderer: motor de rasterización
+	let renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer.setSize(window.innerWidth, window.innerHeight)
+	document.body.appendChild(renderer.domElement);
 
 
-function draw() {
-	background(220);
-	illusion();
-}
-
-function illusion() {
-	push();
-	translate( 320 , 160);
-	uno();
-	pop();
-	push();
-	translate( 610 , 160);
-	dos();
-	pop();
-	push();
-	translate( 610 , 450);
-	uno();
-	pop();
-	push();
-	translate( 320 , 450);
-	dos();
-	pop();
-	angle += change;
-}  
-
-function uno() {
+	// Superficie de lambert 
+	// Refleja la energía incidente desde una dirección igual en todas las direcciones, al variar el punto de vista, la luminicencia
+	// no cambia
 	
-	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
-		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 0 + angle);
-		center();
-		} else if(c == 1){
-		rotate(HALF_PI * 1 - angle);
-		center();
-		} else if(c == 2){
-		rotate(HALF_PI * 3 - angle);
-		center();
-		} else if(c == 3){
-		rotate(HALF_PI * 2 + angle);
-		center();
-		}
-		pop();
-		c++;
+	let material = new THREE.MeshLambertMaterial({ color: "lightgrey", flatShading: true })
+
+	// Clase geométrica para un cubo rectangular
+	// Es centrado en el origen
+	// Se asigna la figura a una clase que la representa por sus vertices, aristas y caras
+	// Polygon mesh
+
+	let bottomBox = new THREE.BoxGeometry(50, 50, 300)
+	let bottomMesh = new THREE.Mesh(bottomBox, material)
+
+	let upBox = new THREE.BoxGeometry(50, 300, 50)
+	let upMesh = new THREE.Mesh(upBox, material)
+	upMesh.position.set(0, 125, 125)
+
+	let topBox = new THREE.BoxGeometry(150, 50, 50)
+	let topMesh = new THREE.Mesh(topBox, material)
+	topMesh.position.set(100, 250, 125)
+
+	// Generación de figura plana
+
+	let topPlane = new THREE.PlaneGeometry(50, 50, 32)
+	let topPlaneMesh = new THREE.Mesh(topPlane, material)
+	topPlaneMesh.position.set(200, 275, 125)
+	topPlaneMesh.rotation.x = THREE.Math.degToRad(-90)
+
+	let topTriGeometry = new THREE.Geometry()
+	topTriGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 50, 0))
+	topTriGeometry.faces.push(new THREE.Face3(0, 1, 2))
+	topTriGeometry.computeFaceNormals()
+
+	let topTriMesh = new THREE.Mesh(topTriGeometry, material)
+	topTriMesh.position.set(225, 275, 150)
+	topTriMesh.rotation.z = THREE.Math.degToRad(180)
+
+	let group = new THREE.Group()
+	group.add(bottomMesh)
+	group.add(upMesh)
+	group.add(topMesh)
+	group.add(topPlaneMesh)
+	group.add(topTriMesh)
+	scene.add(group)
+
+	// Animate our group's y rotation
+	let tl = new TimelineMax({ repeat: -1, repeatDelay: 0.5 });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(360), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(0), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	scene.add(group)
+
+	// Add a light!
+	let light = new THREE.DirectionalLight(0xffffff, 1.8);
+	light.position.set(60, 100, 20);
+	scene.add(light);
+
+	let render = function () {
+		requestAnimationFrame(render);
+		renderer.render(scene, camera);
 	}
-	}
+	render();
 }
 
-function dos() {
-	
-	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
-		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 2 - angle);
-		center2();
-		} else if(c == 1){
-		rotate(HALF_PI * 3 + angle);
-		center2();
-		} else if(c == 2){
-		rotate(HALF_PI * 1 + angle);
-		center2();
-		} else if(c == 3){
-		rotate(HALF_PI * 0 - angle);
-		center2();
-		}
-		pop();
-		c++;
-	}
-	}
-}
-
-function center(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('red');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
-}
-
-function center2(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('green');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
-}
-
-function keyPressed() {
-	if (key === '0') {
-	change = 0;
-	} else if (key === '1') { 
-	change = 0.005;
-	}
-}
+main();
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="Ilussion2.html" class="button-large disable">Previous Page</a>
-											<a href="Software2.html" target="_parent" class="button-large">Next Page</a>
+											<a href="Ilussion3.html" class="button-large">Previous Page</a>
+											<a href="Ilussion5.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>
 							</div>

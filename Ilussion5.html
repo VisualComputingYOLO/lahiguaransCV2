@@ -16,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/illusions/kanizsa.js"></script>
+		<script src="p5/js/illusions/steeping.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -61,52 +61,43 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">KANIZSA ILLUSION</a></h2>
+											<h2><a href="https://en.wikipedia.org/wiki/Stepping_feet_illusion" target="_blank">STEPPING FEET ILLUSION</a></h2>
 											<h3>OPTICAL ILLUSIONS -  P5.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://www.illusionsindex.org/i/kanizsa-triangle" target="_blank">Ilusión de Kanizsa</a>.
+											<a href="https://en.wikipedia.org/wiki/Stepping_feet_illusion" target="_blank">Ilusión de Pies paso a paso</a>.
 										</p>
 
 										<p>
-											La ilusión del <strong>Triángulo de Kanizsa</strong> nos hace darnos cuenta de la forma
-											en que funcionan nuestros sistemas visuales, que no notamos en nuestra
-											experiencia diaria. Al mirar la figura, la mayoría de la gente tendrá
-											la experiencia visual de un contorno de brillo aparente que define un
-											triángulo vertical que ocluye tres discos negros y un segundo triángulo
-											invertido delineado en negro. Por supuesto, estos triángulos de hecho
-											no existen, y no estamos percibiendo discos ocluidos sino más bien
-											fragmentos de discos parecidos a 'Pac-Man'. ('Pacmen' es ahora la
-											nomenclatura estándar para tales elementos inductores). Un relleno
-											ilusorio similar'de color que experimentamos en el triángulo vertical,
-											de modo que la figura aparece llena de un blanco sólido que es más
-											brillante que el resto de la figura, también es muy evidente en el
-											cuadrado de Kanizsa. Tenga en cuenta que tanto el triángulo
-											de Kanizsa como el cuadrado de Kanizsa crean una ilusión de profundidad:
-											la figura central parece sentarse en un plano más alto que el pacmen
-											inductor (o el triángulo ocluido que apunta hacia abajo).
+											<strong>La ilusión de pasos</strong>  es un fenómeno de percepción de movimiento que
+											involucra dos "autobuses", uno azul y otro amarillo, que se mueven
+											 horizontalmente a través de una "calle" que consta de rayas blancas
+											  y negras. Aunque ambos autobuses se mueven a velocidad constante,
+											   su velocidad percibida varía drásticamente.
+										</p>
+
+										<p>
+											Cuando el autobús azul se encuentra sobre las franjas blancas, el
+											contraste es alto (azul oscuro frente a blanco) y fácilmente visible,
+											por lo que parece moverse más rápido que su velocidad real.
+											 Por el contrario, cuando el bus azul está contra las franjas negras,
+											 el contraste es bajo (azul oscuro vs. negro) y más difícil de ver,
+											 por lo que el movimiento parece más lento. Los efectos opuestos 
+											 ocurren para el bus amarillo. Los dos autobuses se asemejan a un
+											  par de pies en movimiento, lo que le da a la ilusión su nombre.
 										</p>
 
 										<div class="text-center">
-											<img src="images/35_kanizsa_main.png" style="height: 220px;vertical-align: middle"/>
+											<img src="images/Fast_slow.jpg" style="height: 220px;vertical-align: middle"/>
 										</div>
 
 										<p>
-											Es denominada así en honor a su descubridor, el artista y psícólogo italiano
-											<a href="https://en.wikipedia.org/wiki/Gaetano_Kanizsa" target="_blank">Gaetano Kanizsa</a>
-											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
-											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
-											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
-											impresión de que surgen manchas "fantasmas" en las intersecciones de 
-											las líneas. Las manchas desaparecen cuando se observa directamente la
-											 intersección. Eso explica por qué se ven puntos en la intersección.
-										</p>
-
-										<p>
-											Agradecemos a
-											<a href="https://medium.com/@naziafakhruddin" target="_blank">Nazia Fakhruddin</a>
-											por las bases para este trabajo.
+											En general, los movimientos de mayor contraste se ven más rápidos
+											que los de menor contraste. El efecto desaparece cuando se quita
+											la textura rayada de la calle porque no queda contraste, mostrando
+											 cómo el fondo de un objeto puede tener un efecto significativo 
+											 en su velocidad percibida.
 										</p>
 
 										<h4>Comandos</h4>
@@ -122,11 +113,11 @@
 												<tbody>
 													<tr>
 														<td><img src="images/keyboard/0.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Detener movimiento</td>
+														<td>Activar barras</td>
 													</tr>
 													<tr>
 														<td><img src="images/keyboard/1.png" style="width:40px;vertical-align: middle"/></td>
-														<td>Activar movimiento</td>
+														<td>Desactivar barras</td>
 													</tr>										
 												</tbody>
 											</table>
@@ -134,7 +125,7 @@
 
 										<div class="canvasp5js" >
 											<div>
-												<div id="kanizsa"></div>												
+												<div id="steeping"></div>												
 											</div>
 										</div>
 										<p></p>
@@ -142,124 +133,89 @@
 
 										<pre>
 											<code class="prettyprint">									
+let radio = 10;
+let ancho = 20;
 let opa = 255;
-let radio = 50;
-let angle = 0;
-let change = 0;
+let velocidad = 0;
 
 function setup() {
 	var myCanvas = createCanvas(1000, 600);
-	myCanvas.parent('kanizsa');
+	myCanvas.parent('steeping');
 }
 
 
 function draw() {
-	background(220);
+	background(255);
 	illusion();
+	if(velocidad != (width + (ancho*5/2))){
+	velocidad++;
+	} else{
+	velocidad = 0;
+	}
 }
 
 function illusion() {
 	push();
-	translate( 320 , 160);
-	uno();
+	lineas();
 	pop();
 	push();
-	translate( 610 , 160);
-	dos();
+	rectangulos();
 	pop();
-	push();
-	translate( 610 , 450);
-	uno();
-	pop();
-	push();
-	translate( 320 , 450);
-	dos();
-	pop();
-	angle += change;
 }  
 
-function uno() {
-	
+function lineas() {
 	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
+	for(i = 0; i < width; i+=(ancho*2)){
 		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 0 + angle);
-		center();
-		} else if(c == 1){
-		rotate(HALF_PI * 1 - angle);
-		center();
-		} else if(c == 2){
-		rotate(HALF_PI * 3 - angle);
-		center();
-		} else if(c == 3){
-		rotate(HALF_PI * 2 + angle);
-		center();
-		}
+		translate(i, 0);
+		vertical();
 		pop();
-		c++;
-	}
 	}
 }
 
-function dos() {
-	
-	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
-		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 2 - angle);
-		center2();
-		} else if(c == 1){
-		rotate(HALF_PI * 3 + angle);
-		center2();
-		} else if(c == 2){
-		rotate(HALF_PI * 1 + angle);
-		center2();
-		} else if(c == 3){
-		rotate(HALF_PI * 0 - angle);
-		center2();
-		}
-		pop();
-		c++;
-	}
-	}
+function rectangulos() {
+	push();
+	translate(-(ancho*5/2) + velocidad,(height/4) + 50);
+	y();
+	pop();
+	push();
+	translate(-(ancho*5/2) + velocidad,(height * 3 /4) - 50);
+	bl();
+	pop();
 }
 
-function center(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('red');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
+function y(){
+	noStroke();
+	rectMode(CENTER);
+	fill('yellow');
+	rect(0,0,ancho*6,ancho*2);
 }
 
-function center2(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('green');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
+function bl(){
+	noStroke();
+	rectMode(CENTER);
+	fill('blue');
+	rect(0,0,ancho*6,ancho*2);
+}
+
+function vertical(){
+	stroke(0,0,0,opa);
+	strokeWeight(ancho);
+	line(0,0,0,height);
 }
 
 function keyPressed() {
 	if (key === '0') {
-	change = 0;
+	opa = 255;
 	} else if (key === '1') { 
-	change = 0.005;
+	opa = 0;
 	}
 }
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="Ilussion2.html" class="button-large">Previous Page</a>
+											<a href="Ilussion4.html" class="button-large">Previous Page</a>
 											<a href="Ilussion4.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>

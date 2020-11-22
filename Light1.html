@@ -1,0 +1,285 @@
+  
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Luis Alejandro Higuaran Serrano | :: Computación Visual ::</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+
+		<!-- Code-Prettify -->
+		<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
+		<script type="module" src="three/js/ambient_light.js"></script>
+
+		<!-- Bootstrap CSS 
+    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
+	
+		<!-- Favicon -->
+		<link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
+
+	</head>
+	<body class="subpage">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<section id="header">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+
+								<!-- Logo -->
+									<h1><a href="index.html" id="logo">VISUAL COMPUTING</a></h1>
+
+								<!-- Nav -->
+									<nav id="nav">
+										<a href="index.html">INICIO</a>
+										<a href="Example1.html">EXAMPLES P5.JS</a>
+										<a href="Ilussion1.html">ILLUSION</a>
+										<a href="Software1.html">SOFTWARE P5.JS</a>
+										<a href="Hardware1.html">HARDWARE P5.JS</a>
+									</nav>
+
+							</div>
+						</div>
+					</div>
+				</section>
+
+			<!-- Content -->
+				<section id="content">
+					<div class="container">
+						<div class="row">
+							<div class="col-12">
+
+								<!-- Main Content -->
+									<section>
+										<header>
+											<h2><a href="https://es.wikipedia.org/wiki/Tri%C3%A1ngulo_de_Penrose" target="_blank">TRIANGULO DE PENROSE</a></h2>
+											<h3>OPTICAL ILLUSIONS -  THREE.JS</h3>
+										</header>
+										<p>
+											En la siguiente publicación se vera el desarrollo de la 
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Triangulo de penrose</a>.
+										</p>
+
+										<p>
+											El <strong>Triángulo de Penrose</strong> es un objeto imposible que fue creado en 
+											1934 por el artista sueco Oscar Reutersvärd. Posteriormente fue redescubierto de 
+											forma independiente por el físico Roger Penrose, en la década de los 1950,
+											 quien lo hizo popular, describiéndolo como "imposibilidad en su forma más pura".1​ 
+											 Aparece de forma destacada en las obras del artista M. C. Escher, 
+											 hasta el punto que fue parcialmente inspirado por sus primeras imágenes de objetos imposibles.
+											  El término puede referirse tanto al objeto imposible como a su representación bidimensional.
+											
+										</p>
+										<p>
+											Lógicamente, el triángulo de Penrose, no es un triángulo como imaginamos. 
+											En verdad lo que hace es representar las tres caras del cubo, pero cuando lo 
+											vemos desde un ángulo determinado, genera una ilusión. Existen más figuras de este tipo, 
+											pero quizá este triángulo es la que ha terminado por ser más conocida.
+										</p>
+
+										<p>
+											Agradecemos a
+											<a href="https://www.youtube.com/watch?v=OpMtoHPwMgg&t=1111s" target="_blank">Zach Goldstein</a>
+											por las bases para este trabajo.
+										</p>
+
+										<div id="canvasthreejs" >
+											<div>
+												<canvas id="c" style="height: 500px; width: 800px;"></canvas>												
+											</div>
+										</div>
+										<p></p>
+										<h4>threejs Code</h4>
+
+										<pre>
+											<code class="prettyprint">									
+function main() {
+	// Step 4 - Make it move!
+	// - Combine geometry into one group
+	// - Animate the group's rotation
+	// Asignación de la escena donde estaran alojados los objetos para la ilusión
+	let scene = new THREE.Scene();
+	// El tamaño del objeto en la imagen renderizada se mantiene constante sin importar la distancia de la camara
+	let camera = new THREE.OrthographicCamera(window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000);
+	camera.position.set(500, 500, 500)
+	camera.lookAt(scene.position);
+
+	// Add our renderer
+	// Se usa WebGL
+	// WebGLRenderer: motor de rasterización
+	let renderer = new THREE.WebGLRenderer({ antialias: true });
+	renderer.setSize(window.innerWidth, window.innerHeight)
+	document.body.appendChild(renderer.domElement);
+
+
+	// Superficie de lambert 
+	// Refleja la energía incidente desde una dirección igual en todas las direcciones, al variar el punto de vista, la luminicencia
+	// no cambia
+	
+	let material = new THREE.MeshLambertMaterial({ color: "lightgrey", flatShading: true })
+
+	// Clase geométrica para un cubo rectangular
+	// Es centrado en el origen
+	// Se asigna la figura a una clase que la representa por sus vertices, aristas y caras
+	// Polygon mesh
+
+	let bottomBox = new THREE.BoxGeometry(50, 50, 300)
+	let bottomMesh = new THREE.Mesh(bottomBox, material)
+
+	let upBox = new THREE.BoxGeometry(50, 300, 50)
+	let upMesh = new THREE.Mesh(upBox, material)
+	upMesh.position.set(0, 125, 125)
+
+	let topBox = new THREE.BoxGeometry(150, 50, 50)
+	let topMesh = new THREE.Mesh(topBox, material)
+	topMesh.position.set(100, 250, 125)
+
+	// Generación de figura plana
+
+	let topPlane = new THREE.PlaneGeometry(50, 50, 32)
+	let topPlaneMesh = new THREE.Mesh(topPlane, material)
+	topPlaneMesh.position.set(200, 275, 125)
+	topPlaneMesh.rotation.x = THREE.Math.degToRad(-90)
+
+	let topTriGeometry = new THREE.Geometry()
+	topTriGeometry.vertices.push(new THREE.Vector3(0, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 0, 0))
+	topTriGeometry.vertices.push(new THREE.Vector3(50, 50, 0))
+	topTriGeometry.faces.push(new THREE.Face3(0, 1, 2))
+	topTriGeometry.computeFaceNormals()
+
+	let topTriMesh = new THREE.Mesh(topTriGeometry, material)
+	topTriMesh.position.set(225, 275, 150)
+	topTriMesh.rotation.z = THREE.Math.degToRad(180)
+
+	let group = new THREE.Group()
+	group.add(bottomMesh)
+	group.add(upMesh)
+	group.add(topMesh)
+	group.add(topPlaneMesh)
+	group.add(topTriMesh)
+	scene.add(group)
+
+	// Animate our group's y rotation
+	let tl = new TimelineMax({ repeat: -1, repeatDelay: 0.5 });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(360), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	tl.to(group.rotation, 3, { y: THREE.Math.degToRad(0), ease: "rough({strength: 3, points: 50, template: strong.inOut, taper: both, randomize: false})" });
+	scene.add(group)
+
+	// Add a light!
+	let light = new THREE.DirectionalLight(0xffffff, 1.8);
+	light.position.set(60, 100, 20);
+	scene.add(light);
+
+	let render = function () {
+		requestAnimationFrame(render);
+		renderer.render(scene, camera);
+	}
+	render();
+}
+
+main();
+											</code>
+										</pre>
+										<!-- Pagination -->
+										<div class="pagination">
+											<a href="Ilussion3.html" class="button-large">Previous Page</a>
+											<a href="Ilussion5.html" target="_parent" class="button-large">Next Page</a>
+										</div>
+									</section>
+							</div>
+						</div>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<section id="footer">
+					<div class="container">
+						<div class="row">
+							<div class="col-8 col-12-medium">
+
+								<!-- Links -->
+									
+									<section>
+										<!--
+										<h2>Links to Important Stuff</h2>
+										<div>
+											<div class="row">
+												<div class="col-3 col-12-small">
+													<ul class="link-list last-child">
+														<li><a href="#">Neque amet dapibus</a></li>
+														<li><a href="#">Sed mattis quis rutrum</a></li>
+														<li><a href="#">Accumsan suspendisse</a></li>
+														<li><a href="#">Eu varius vitae magna</a></li>
+													</ul>
+												</div>
+												<div class="col-3 col-12-small">
+													<ul class="link-list last-child">
+														<li><a href="#">Neque amet dapibus</a></li>
+														<li><a href="#">Sed mattis quis rutrum</a></li>
+														<li><a href="#">Accumsan suspendisse</a></li>
+														<li><a href="#">Eu varius vitae magna</a></li>
+													</ul>
+												</div>
+												<div class="col-3 col-12-small">
+													<ul class="link-list last-child">
+														<li><a href="#">Neque amet dapibus</a></li>
+														<li><a href="#">Sed mattis quis rutrum</a></li>
+														<li><a href="#">Accumsan suspendisse</a></li>
+														<li><a href="#">Eu varius vitae magna</a></li>
+													</ul>
+												</div>
+												<div class="col-3 col-12-small">
+													<ul class="link-list last-child">
+														<li><a href="#">Neque amet dapibus</a></li>
+														<li><a href="#">Sed mattis quis rutrum</a></li>
+														<li><a href="#">Accumsan suspendisse</a></li>
+														<li><a href="#">Eu varius vitae magna</a></li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										-->
+									</section>
+
+							</div>
+							<div class="col-4 col-12-medium imp-medium">
+
+								<!-- Blurb -->
+									<section>
+										<!--
+										<h2>An Informative Text Blurb</h2>
+										<p>
+											Duis neque nisi, dapibus sed mattis quis, rutrum accumsan sed. Suspendisse eu
+											varius nibh. Suspendisse vitae magna eget odio amet mollis. Duis neque nisi,
+											dapibus sed mattis quis, sed rutrum accumsan sed. Suspendisse eu varius nibh
+											lorem ipsum amet dolor sit amet lorem ipsum consequat gravida justo mollis.
+										</p>
+										-->
+									</section>
+
+							</div>
+						</div>
+					</div>
+				</section>
+
+			<!-- Copyright -->
+				<div id="copyright">
+					&copy; Untitled. All rights reserved. | Design: <a href="http://html5up.net">HTML5 UP</a>
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -11,7 +11,7 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
-		<script type="module" src="three/js/attenuation_light.js"></script>
+		<script type="module" src="three/js/fog.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -56,26 +56,26 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://en.wikipedia.org/wiki/Attenuation" target="_blank">LIGHT ATTENUATION</a></h2>
+											<h2><a href="https://en.wikipedia.org/wiki/Fog" target="_blank">FOG</a></h2>
 											<h3>LIGHTS -  THREE.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://threejs.org/docs/index.html#api/en/lights/PointLight" target="_blank">atenuación de Luz</a>.
+											<a href="https://threejs.org/docs/index.html#api/en/scenes/Fog" target="_blank">Niebla</a>.
 										</p>
 
 										<p>
-											Una propiedad básica de la luz es que pierde su intensidad cuanto más se aleja
-											de su fuente. Es por eso que Venus y Mercurio son mucho más calientes que la
-											Tierra y Marte es mucho más frío. La intensidad de la luz del sol cambia en
-											proporción a la distancia del sol. El nombre técnico para esto es <strong>atenuación de Luz</strong>.
+											La niebla en un motor 3D es generalmente una forma de desvanecerse a un color específico
+											según la distancia desde la cámara. En three.js agrega niebla mediante la creación
+											<strong>Fog</strong> o el <strong>FogExp2</strong> objeto y colocarlo en la escena de fog la propiedad.
 											
 										</p>
 										<p>
-											En física , la atenuación o, en algunos contextos, la extinción es la pérdida gradual
-											de la intensidad del flujo a través de un medio . Por ejemplo, las gafas oscuras
-											atenúan la luz solar , el plomo atenúa los rayos X y el agua y el aire atenúan
-											tanto la luz como el sonido a tasas de atenuación variables.
+											Fog le permite elegir las configuraciones de <strong>near</strong> y <strong>far</strong>
+											las cuáles son las distancias de la cámara. Todo lo que esté mas cerca de
+											<strong>near</strong> no se ve afectado por la niebla. Cualquier cosa más allá de <strong>far</strong>
+											es completamente el color de la niebla. Las partes intermedias entre <strong>near</strong> y
+											<strong>far</strong> se desvanecen de su color material al color de la niebla.
 										</p>
 
 										<p>
@@ -101,108 +101,97 @@
 										<pre>
 											<code class="prettyprint">									
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
-import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
 import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
 
 function main() {
 	const canvas = document.querySelector('#c');
 	const renderer = new THREE.WebGLRenderer({canvas});
+	const gui = new GUI();
 
-	const fov = 45;
+	const fov = 75;
 	const aspect = 2;  // the canvas default
 	const near = 0.1;
-	const far = 100;
+	const far = 5;
 	const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-	camera.position.set(0, 10, 20);
-
-	const controls = new OrbitControls(camera, canvas);
-	controls.target.set(0, 5, 0);
-	controls.update();
+	camera.position.z = 2;
 
 	const scene = new THREE.Scene();
-	scene.background = new THREE.Color('black');
 
-	{
-	const planeSize = 40;
-
-	const loader = new THREE.TextureLoader();
-	const texture = loader.load('https://threejsfundamentals.org/threejs/resources/images/checker.png');
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.magFilter = THREE.NearestFilter;
-	const repeats = planeSize / 2;
-	texture.repeat.set(repeats, repeats);
-
-	const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-	const planeMat = new THREE.MeshPhongMaterial({
-		map: texture,
-		side: THREE.DoubleSide,
-	});
-	const mesh = new THREE.Mesh(planeGeo, planeMat);
-	mesh.rotation.x = Math.PI * -.5;
-	scene.add(mesh);
+	// We use this class to pass to dat.gui
+	// so when it manipulates near or far
+	// near is never > far and far is never < near
+	// Also when dat.gui maniplates color we'll
+	// update both the fog and background colors.
+	class FogGUIHelper {
+	constructor(fog, backgroundColor) {
+		this.fog = fog;
+		this.backgroundColor = backgroundColor;
 	}
-	{
-	const cubeSize = 4;
-	const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-	const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-	const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-	mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-	scene.add(mesh);
+	get near() {
+		return this.fog.near;
 	}
-	{
-	const sphereRadius = 3;
-	const sphereWidthDivisions = 32;
-	const sphereHeightDivisions = 16;
-	const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-	const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
-	const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-	mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-	scene.add(mesh);
+	set near(v) {
+		this.fog.near = v;
+		this.fog.far = Math.max(this.fog.far, v);
 	}
-
-	class ColorGUIHelper {
-	constructor(object, prop) {
-		this.object = object;
-		this.prop = prop;
+	get far() {
+		return this.fog.far;
 	}
-	get value() {
-		return `#${this.object[this.prop].getHexString()}`;
+	set far(v) {
+		this.fog.far = v;
+		this.fog.near = Math.min(this.fog.near, v);
 	}
-	set value(hexString) {
-		this.object[this.prop].set(hexString);
+	get color() {
+		return `#${this.fog.color.getHexString()}`;
+	}
+	set color(hexString) {
+		this.fog.color.set(hexString);
+		this.backgroundColor.set(hexString);
 	}
 	}
 
-	function makeXYZGUI(gui, vector3, name, onChangeFn) {
-	const folder = gui.addFolder(name);
-	folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
-	folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
-	folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
-	folder.open();
+	{
+	const near = 1;
+	const far = 2;
+	const color = 'lightblue';
+	scene.fog = new THREE.Fog(color, near, far);
+	scene.background = new THREE.Color(color);
+
+	const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
+	gui.add(fogGUIHelper, 'near', near, far).listen();
+	gui.add(fogGUIHelper, 'far', near, far).listen();
+	gui.addColor(fogGUIHelper, 'color');
 	}
 
 	{
 	const color = 0xFFFFFF;
 	const intensity = 1;
-	const light = new THREE.PointLight(color, intensity);
-	light.position.set(0, 10, 0);
+	const light = new THREE.DirectionalLight(color, intensity);
+	light.position.set(-1, 2, 4);
 	scene.add(light);
-
-	const helper = new THREE.PointLightHelper(light);
-	scene.add(helper);
-
-	function updateLight() {
-		helper.update();
 	}
 
-	const gui = new GUI();
-	gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-	gui.add(light, 'intensity', 0, 2, 0.01);
-	gui.add(light, 'distance', 0, 40).onChange(updateLight);
+	const boxWidth = 1;
+	const boxHeight = 1;
+	const boxDepth = 1;
+	const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-	makeXYZGUI(gui, light.position, 'position');
+	function makeInstance(geometry, color, x) {
+	const material = new THREE.MeshPhongMaterial({color});
+
+	const cube = new THREE.Mesh(geometry, material);
+	scene.add(cube);
+
+	cube.position.x = x;
+
+	return cube;
 	}
+
+	const cubes = [
+	makeInstance(geometry, 0x44aa88,  0),
+	makeInstance(geometry, 0x8844aa, -2),
+	makeInstance(geometry, 0xaa8844,  2),
+	];
 
 	function resizeRendererToDisplaySize(renderer) {
 	const canvas = renderer.domElement;
@@ -215,13 +204,21 @@ function main() {
 	return needResize;
 	}
 
-	function render() {
+	function render(time) {
+	time *= 0.0003;
 
 	if (resizeRendererToDisplaySize(renderer)) {
 		const canvas = renderer.domElement;
 		camera.aspect = canvas.clientWidth / canvas.clientHeight;
 		camera.updateProjectionMatrix();
 	}
+
+	cubes.forEach((cube, ndx) => {
+		const speed = 1 + ndx * .1;
+		const rot = time * speed;
+		cube.rotation.x = rot;
+		cube.rotation.y = rot;
+	});
 
 	renderer.render(scene, camera);
 
@@ -237,7 +234,7 @@ main();
 										<!-- Pagination -->
 										<div class="pagination">
 											<a href="Light1.html" class="button-large">Previous Page</a>
-											<a href="Light3.html" target="_parent" class="button-large">Next Page</a>
+											<a href="Light2.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>
 							</div>

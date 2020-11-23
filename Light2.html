@@ -1,4 +1,3 @@
-  
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -12,7 +11,7 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
-		<script type="module" src="three/js/ambient_light.js"></script>
+		<script type="module" src="three/js/attenuation_light.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -57,28 +56,32 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://en.wikipedia.org/wiki/Shading#Ambient_lighting" target="_blank">AMBIENT LIGHT</a></h2>
+											<h2><a href="https://en.wikipedia.org/wiki/Attenuation" target="_blank">LIGHT ATTENUATION</a></h2>
 											<h3>LIGHTS -  THREE.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://threejs.org/docs/index.html#api/en/lights/AmbientLight" target="_blank">luz de Ambiente</a>.
+											<a href="https://threejs.org/docs/index.html#api/en/lights/PointLight" target="_blank">atenuación de Luz</a>.
 										</p>
 
 										<p>
-											Una fuente de luz ambiental representa una fuente de luz omnidireccional, de intensidad
-											fija y de color fijo que afecta a todos los objetos en la escena por igual
-											(es omnipresente). Durante el renderizado, todos los objetos de la escena se
-											iluminan con la intensidad y el color especificados. Este tipo de fuente de
-											luz se utiliza principalmente para proporcionar a la escena una vista básica
-											de los diferentes objetos que contiene. Este es el tipo de iluminación más
-											simple de implementar y modela cómo la luz se puede dispersar o reflejar
-											muchas veces, produciendo así un efecto uniforme.
+											Una propiedad básica de la luz es que pierde su intensidad cuanto más se aleja
+											de su fuente. Es por eso que Venus y Mercurio son mucho más calientes que la
+											Tierra y Marte es mucho más frío. La intensidad de la luz del sol cambia en
+											proporción a la distancia del sol. El nombre técnico para esto es <strong>atenuación de Luz</strong>.
 											
 										</p>
 										<p>
-											Esta luz ilumina globalmente todos los objetos de la escena por igual.
-											Esta luz no se puede utilizar para proyectar sombras ya que no tiene una dirección.
+											En física , la atenuación o, en algunos contextos, la extinción es la pérdida gradual
+											de la intensidad del flujo a través de un medio . Por ejemplo, las gafas oscuras
+											atenúan la luz solar , el plomo atenúa los rayos X y el agua y el aire atenúan
+											tanto la luz como el sonido a tasas de atenuación variables.
+										</p>
+
+										<p>
+											Una luz que se emite desde un solo punto en todas las direcciones.
+											Un caso de uso común para esto es replicar la luz emitida por una
+											bombilla desnuda.
 										</p>
 
 										<p>
@@ -104,117 +107,136 @@ import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.m
 function main() {
 	const canvas = document.querySelector('#c');
 	const renderer = new THREE.WebGLRenderer({canvas});
-	
+
 	const fov = 45;
 	const aspect = 2;  // the canvas default
 	const near = 0.1;
 	const far = 100;
 	const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 	camera.position.set(0, 10, 20);
-	
+
 	const controls = new OrbitControls(camera, canvas);
 	controls.target.set(0, 5, 0);
 	controls.update();
-	
+
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color('black');
-	
+
 	{
-		const planeSize = 40;
-	
-		const loader = new THREE.TextureLoader();
-		const texture = loader.load('https://threejsfundamentals.org/threejs/resources/images/checker.png');
-		texture.wrapS = THREE.RepeatWrapping;
-		texture.wrapT = THREE.RepeatWrapping;
-		texture.magFilter = THREE.NearestFilter;
-		const repeats = planeSize / 2;
-		texture.repeat.set(repeats, repeats);
-	
-		const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
-		const planeMat = new THREE.MeshPhongMaterial({
+	const planeSize = 40;
+
+	const loader = new THREE.TextureLoader();
+	const texture = loader.load('https://threejsfundamentals.org/threejs/resources/images/checker.png');
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	texture.magFilter = THREE.NearestFilter;
+	const repeats = planeSize / 2;
+	texture.repeat.set(repeats, repeats);
+
+	const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+	const planeMat = new THREE.MeshPhongMaterial({
 		map: texture,
 		side: THREE.DoubleSide,
-		});
-		const mesh = new THREE.Mesh(planeGeo, planeMat);
-		mesh.rotation.x = Math.PI * -.5;
-		scene.add(mesh);
+	});
+	const mesh = new THREE.Mesh(planeGeo, planeMat);
+	mesh.rotation.x = Math.PI * -.5;
+	scene.add(mesh);
 	}
 	{
-		const cubeSize = 4;
-		const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-		const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-		const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-		mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-		scene.add(mesh);
+	const cubeSize = 4;
+	const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
+	const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
+	const mesh = new THREE.Mesh(cubeGeo, cubeMat);
+	mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+	scene.add(mesh);
 	}
 	{
-		const sphereRadius = 3;
-		const sphereWidthDivisions = 32;
-		const sphereHeightDivisions = 16;
-		const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-		const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
-		const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-		mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-		scene.add(mesh);
+	const sphereRadius = 3;
+	const sphereWidthDivisions = 32;
+	const sphereHeightDivisions = 16;
+	const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
+	const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
+	const mesh = new THREE.Mesh(sphereGeo, sphereMat);
+	mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+	scene.add(mesh);
 	}
-	
+
 	class ColorGUIHelper {
-		constructor(object, prop) {
+	constructor(object, prop) {
 		this.object = object;
 		this.prop = prop;
-		}
-		get value() {
+	}
+	get value() {
 		return `#${this.object[this.prop].getHexString()}`;
-		}
-		set value(hexString) {
+	}
+	set value(hexString) {
 		this.object[this.prop].set(hexString);
-		}
 	}
-	
+	}
+
+	function makeXYZGUI(gui, vector3, name, onChangeFn) {
+	const folder = gui.addFolder(name);
+	folder.add(vector3, 'x', -10, 10).onChange(onChangeFn);
+	folder.add(vector3, 'y', 0, 10).onChange(onChangeFn);
+	folder.add(vector3, 'z', -10, 10).onChange(onChangeFn);
+	folder.open();
+	}
+
 	{
-		const color = 0xFFFFFF;
-		const intensity = 1;
-		const light = new THREE.AmbientLight(color, intensity);
-		scene.add(light);
-	
-		const gui = new GUI();
-		gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-		gui.add(light, 'intensity', 0, 2, 0.01);
+	const color = 0xFFFFFF;
+	const intensity = 1;
+	const light = new THREE.PointLight(color, intensity);
+	light.position.set(0, 10, 0);
+	scene.add(light);
+
+	const helper = new THREE.PointLightHelper(light);
+	scene.add(helper);
+
+	function updateLight() {
+		helper.update();
 	}
-	
+
+	const gui = new GUI();
+	gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
+	gui.add(light, 'intensity', 0, 2, 0.01);
+	gui.add(light, 'distance', 0, 40).onChange(updateLight);
+
+	makeXYZGUI(gui, light.position, 'position');
+	}
+
 	function resizeRendererToDisplaySize(renderer) {
-		const canvas = renderer.domElement;
-		const width = canvas.clientWidth;
-		const height = canvas.clientHeight;
-		const needResize = canvas.width !== width || canvas.height !== height;
-		if (needResize) {
+	const canvas = renderer.domElement;
+	const width = canvas.clientWidth;
+	const height = canvas.clientHeight;
+	const needResize = canvas.width !== width || canvas.height !== height;
+	if (needResize) {
 		renderer.setSize(width, height, false);
-		}
-		return needResize;
 	}
-	
+	return needResize;
+	}
+
 	function render() {
-	
-		if (resizeRendererToDisplaySize(renderer)) {
+
+	if (resizeRendererToDisplaySize(renderer)) {
 		const canvas = renderer.domElement;
 		camera.aspect = canvas.clientWidth / canvas.clientHeight;
 		camera.updateProjectionMatrix();
-		}
-	
-		renderer.render(scene, camera);
-	
-		requestAnimationFrame(render);
 	}
-	
+
+	renderer.render(scene, camera);
+
 	requestAnimationFrame(render);
 	}
-	
-	main();
+
+	requestAnimationFrame(render);
+}
+
+main();
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="" class="button-large disable">Previous Page</a>
+											<a href="Light1.html" class="button-large">Previous Page</a>
 											<a href="Light2.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>

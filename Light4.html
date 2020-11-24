@@ -11,7 +11,7 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenLite.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TimelineMax.min.js"></script>
-		<script type="module" src="three/js/fog.js"></script>
+		<script type="module" src="three/js/phongf.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -56,142 +56,197 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="https://en.wikipedia.org/wiki/Fog" target="_blank">FOG</a></h2>
+											<h2><a href="https://es.wikipedia.org/wiki/Modelo_de_reflexi%C3%B3n_de_Phong" target="_blank">Phong Lighting Model</a></h2>
 											<h3>LIGHTS -  THREE.JS</h3>
 										</header>
 										<p>
 											En la siguiente publicación se vera el desarrollo de la 
-											<a href="https://threejs.org/docs/index.html#api/en/scenes/Fog" target="_blank">Niebla</a>.
+											<a href="https://learnopengl.com/Lighting/Basic-Lighting" target="_blank">luz Phong</a>.
 										</p>
 
 										<p>
-											La niebla en un motor 3D es generalmente una forma de desvanecerse a un color específico
-											según la distancia desde la cámara. En three.js agrega niebla mediante la creación
-											<strong>Fog</strong> o el <strong>FogExp2</strong> objeto y colocarlo en la escena de fog la propiedad.
-											
+											<strong>El sombreado de Phong</strong> también puede referirse a la combinación específica de la interpolación
+											de Phong y el modelo de reflexión de Phong , que es un modelo empírico de iluminación local.
+											Describe la forma en que una superficie refleja la luz como una combinación del reflejo
+											difuso de superficies rugosas con el reflejo especular de superficies brillantes. Se
+											basa en la observación informal de Bui Tuong Phong de que las superficies brillantes
+											tienen pequeños reflejos especulares intensos , mientras que las superficies opacas
+											tienen grandes reflejos que caen más gradualmente. El modelo de reflexión también
+											incluye un término ambiental para dar cuenta de la pequeña cantidad de luz que se dispersa
+											por toda la escena.
 										</p>
+
+										<div class="text-center">
+											<img src="images/Phong_components_version_4.png" style="height: 220px;vertical-align: middle"/>
+										</div>
+
 										<p>
-											Fog le permite elegir las configuraciones de <strong>near</strong> y <strong>far</strong>
-											las cuáles son las distancias de la cámara. Todo lo que esté mas cerca de
-											<strong>near</strong> no se ve afectado por la niebla. Cualquier cosa más allá de <strong>far</strong>
-											es completamente el color de la niebla. Las partes intermedias entre <strong>near</strong> y
-											<strong>far</strong> se desvanecen de su color material al color de la niebla.
+											Ilustración visual de la ecuación de Phong: aquí la luz es blanca, los colores ambiental
+											y difuso son azules y el color especular es blanco, reflejando una pequeña parte de la
+											luz que incide en la superficie, pero solo en reflejos muy estrechos. La intensidad del
+											componente difuso varía con la dirección de la superficie y el componente ambiental es
+											uniforme (independiente de la dirección).
 										</p>
 
 										<p>
-											Una luz que se emite desde un solo punto en todas las direcciones.
-											Un caso de uso común para esto es replicar la luz emitida por una
-											bombilla desnuda.
+											<strong>Iluminación ambiental:</strong> incluso cuando está oscuro, suele haber algo de luz en algún
+											 lugar del mundo (la luna, una luz distante), por lo que los objetos casi nunca 
+											 están completamente oscuros. Para simular esto usamos una constante de iluminación 
+											 ambiental que siempre le da al objeto algo de color.
+										</p>
+
+										<p>
+											<strong>Iluminación difusa:</strong> simula el impacto direccional que tiene un objeto ligero sobre un objeto.
+											Este es el componente visualmente más significativo del modelo de iluminación. Cuanto más
+											una parte de un objeto mira hacia la fuente de luz, más brillante se vuelve.
+										</p>
+
+										<p>
+											<strong>Iluminación espectacular:</strong> simula el punto brillante de una luz que aparece en objetos
+											brillantes. Los reflejos especulares están más inclinados al color de la luz que al color del objeto.
 										</p>
 
 										<p>
 											Agradecemos a
-											<a href="https://threejsfundamentals.org/" target="_blank">Greggman</a>
+											<a href="https://observablehq.com/@camargo/three-js-utah-teapot-with-a-custom-phong-shader-material" target="_blank">Chris Camargo</a>
 											por las bases para este trabajo.
 										</p>
 
 										<div id="canvasthreejs" >
 											<div>
-												<canvas id="c" style="height: 500px; width: 100%;"></canvas>												
+												<canvas id="cf" style="height: 500px; width: 100%;"></canvas>												
 											</div>
 										</div>
 										<p></p>
-										<h4>threejs Code</h4>
+										<h4>threejs Code (Fragment Shader)</h4>
 
 										<pre>
 											<code class="prettyprint">									
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/build/three.module.js';
-import {GUI} from 'https://threejsfundamentals.org/threejs/../3rdparty/dat.gui.module.js';
+import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r122/examples/jsm/controls/OrbitControls.js';
+
 
 function main() {
-	const canvas = document.querySelector('#c');
+	const canvas = document.querySelector('#cf');
 	const renderer = new THREE.WebGLRenderer({canvas});
-	const gui = new GUI();
 
-	const fov = 75;
+	const fov = 45;
 	const aspect = 2;  // the canvas default
 	const near = 0.1;
-	const far = 5;
+	const far = 100;
 	const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-	camera.position.z = 2;
+	camera.position.set(0, 10, 20);
+
+	const controls = new OrbitControls(camera, canvas);
+	controls.target.set(0, 5, 0);
+	controls.update();
 
 	const scene = new THREE.Scene();
+	scene.background = new THREE.Color('black');
 
-	// We use this class to pass to dat.gui
-	// so when it manipulates near or far
-	// near is never > far and far is never < near
-	// Also when dat.gui maniplates color we'll
-	// update both the fog and background colors.
-	class FogGUIHelper {
-	constructor(fog, backgroundColor) {
-		this.fog = fog;
-		this.backgroundColor = backgroundColor;
+	const fragmentShader = `
+	varying vec3 Normal;
+	varying vec3 Position;
+
+	uniform vec3 Ka;
+	uniform vec3 Kd;
+	uniform vec3 Ks;
+	uniform vec4 LightPosition;
+	uniform vec3 LightIntensity;
+	uniform float Shininess;
+
+	vec3 phong() {
+		vec3 n = normalize(Normal);
+		vec3 s = normalize(vec3(LightPosition) - Position);
+		vec3 v = normalize(vec3(-Position));
+		vec3 r = reflect(-s, n);
+
+		vec3 ambient = Ka;
+		vec3 diffuse = Kd * max(dot(s, n), 0.0);
+		vec3 specular = Ks * pow(max(dot(r, v), 0.0), Shininess);
+
+		return LightIntensity * (ambient + diffuse + specular);
 	}
-	get near() {
-		return this.fog.near;
+
+	void main() {
+		gl_FragColor = vec4(phong(), 1.0);
 	}
-	set near(v) {
-		this.fog.near = v;
-		this.fog.far = Math.max(this.fog.far, v);
+	`;
+
+	const vertexShader = `
+	varying vec3 Normal;
+	varying vec3 Position;
+
+	void main() {
+		Normal = normalize(normalMatrix * normal);
+		Position = vec3(modelViewMatrix * vec4(position, 1.0));
+		gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 	}
-	get far() {
-		return this.fog.far;
-	}
-	set far(v) {
-		this.fog.far = v;
-		this.fog.near = Math.min(this.fog.near, v);
-	}
-	get color() {
-		return `#${this.fog.color.getHexString()}`;
-	}
-	set color(hexString) {
-		this.fog.color.set(hexString);
-		this.backgroundColor.set(hexString);
-	}
-	}
+	`;
+
+	const loaderf = new THREE.TextureLoader();
+	const texturef = loaderf.load('https://threejsfundamentals.org/threejs/resources/images/bayer.png');
+	texturef.minFilter = THREE.NearestFilter;
+	texturef.magFilter = THREE.NearestFilter;
+	texturef.wrapS = THREE.RepeatWrapping;
+	texturef.wrapT = THREE.RepeatWrapping;
+	const uniforms = {
+		Ka: { value: new THREE.Vector3(1.0, 0.5, 0.5) },
+		Kd: { value: new THREE.Vector3(1.0, 0.5, 0.5) },
+		Ks: { value: new THREE.Vector3(0.9, 1.0, 1.0) },
+		LightIntensity: { value: new THREE.Vector4(0.5, 0.5, 0.5, 1.0) },
+		LightPosition: { value: new THREE.Vector4(0.0, 50.0, 0.0, 1.0) },
+		Shininess: { value: 200.0 }
+	};
+	const material = new THREE.ShaderMaterial({
+	vertexShader,
+	fragmentShader,
+	uniforms
+	});
 
 	{
-	const near = 1;
-	const far = 2;
-	const color = 'lightblue';
-	scene.fog = new THREE.Fog(color, near, far);
-	scene.background = new THREE.Color(color);
+	const planeSize = 40;
 
-	const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
-	gui.add(fogGUIHelper, 'near', near, far).listen();
-	gui.add(fogGUIHelper, 'far', near, far).listen();
-	gui.addColor(fogGUIHelper, 'color');
+	const loader = new THREE.TextureLoader();
+	const texture = loader.load('https://threejsfundamentals.org/threejs/resources/images/checker.png');
+	texture.wrapS = THREE.RepeatWrapping;
+	texture.wrapT = THREE.RepeatWrapping;
+	texture.magFilter = THREE.NearestFilter;
+	const repeats = planeSize / 2;
+	texture.repeat.set(repeats, repeats);
+
+	const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize);
+	const planeMat = new THREE.MeshPhongMaterial({
+		map: texture,
+		side: THREE.DoubleSide,
+	});
+	const mesh = new THREE.Mesh(planeGeo, planeMat);
+	mesh.rotation.x = Math.PI * -.5;
+	scene.add(mesh);
+	}
+	{
+	const cubeSize = 4;
+	const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
+	const mesh = new THREE.Mesh(cubeGeo, material);
+	mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
+	scene.add(mesh);
+	}
+	{
+	const sphereRadius = 3;
+	const sphereWidthDivisions = 32;
+	const sphereHeightDivisions = 16;
+	const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
+	const mesh = new THREE.Mesh(sphereGeo, material);
+	mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
+	scene.add(mesh);
 	}
 
 	{
 	const color = 0xFFFFFF;
 	const intensity = 1;
-	const light = new THREE.DirectionalLight(color, intensity);
-	light.position.set(-1, 2, 4);
+	const light = new THREE.AmbientLight(color, intensity);
 	scene.add(light);
 	}
-
-	const boxWidth = 1;
-	const boxHeight = 1;
-	const boxDepth = 1;
-	const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
-	function makeInstance(geometry, color, x) {
-	const material = new THREE.MeshPhongMaterial({color});
-
-	const cube = new THREE.Mesh(geometry, material);
-	scene.add(cube);
-
-	cube.position.x = x;
-
-	return cube;
-	}
-
-	const cubes = [
-	makeInstance(geometry, 0x44aa88,  0),
-	makeInstance(geometry, 0x8844aa, -2),
-	makeInstance(geometry, 0xaa8844,  2),
-	];
 
 	function resizeRendererToDisplaySize(renderer) {
 	const canvas = renderer.domElement;
@@ -204,21 +259,13 @@ function main() {
 	return needResize;
 	}
 
-	function render(time) {
-	time *= 0.0003;
+	function render() {
 
 	if (resizeRendererToDisplaySize(renderer)) {
 		const canvas = renderer.domElement;
 		camera.aspect = canvas.clientWidth / canvas.clientHeight;
 		camera.updateProjectionMatrix();
 	}
-
-	cubes.forEach((cube, ndx) => {
-		const speed = 1 + ndx * .1;
-		const rot = time * speed;
-		cube.rotation.x = rot;
-		cube.rotation.y = rot;
-	});
 
 	renderer.render(scene, camera);
 
@@ -233,7 +280,7 @@ main();
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="Light2.html" class="button-large">Previous Page</a>
+											<a href="Light3.html" class="button-large">Previous Page</a>
 											<a href="Light4.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>

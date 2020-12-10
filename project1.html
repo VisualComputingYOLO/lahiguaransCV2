@@ -79,122 +79,106 @@
 											</div>
 										</div>
 										<p></p>
-										<h4>p5*js Code</h4>
+										<h4>texture.frag Code</h4>
 
 										<pre>
 											<code class="prettyprint">									
-let opa = 255;
-let radio = 50;
-let angle = 0;
-let change = 0;
+// Estas son definiciones necesarias que le permiten a la tarjeta gráfica saber cómo representar el sombreador
+#ifdef GL_ES
+precision mediump float;
+#endif
+  
+varying vec2 vTexCoord;
+  // Valores que se pasan desde p5
+uniform sampler2D u_img;
+uniform int u_key;
+vec3 lineColor = vec3(0.8941, 0.3137, 0.0);
+float maxMix = (0.6);
+float minMix = (0.2);
+float lineWidth = 0.008;
+float lineWidthHalf = lineWidth/2.0;
 
-function setup() {
-	var myCanvas = createCanvas(1000, 600);
-	myCanvas.parent('kanizsa');
+/* float line(vec2 A){
+  vec2 point1 = vec2(A.x, A.y);
+} */
+
+// Funcion para convertir un color a escala de grises
+vec3 orangeColor(vec3 color) {
+  vec3 newColor;
+  if(color.r <= 0.3){
+    newColor.r = mix(color.r, lineColor.r, minMix);
+  } else {
+    newColor.r = mix(color.r, lineColor.r, maxMix);
+  }
+  if(color.g <= 0.3){
+    newColor.g = mix(color.g, lineColor.g, minMix);
+  } else {
+    newColor.g = mix(color.g, lineColor.g, maxMix);
+  }
+  if(color.b <= 0.3){
+    newColor.b = mix(color.b, lineColor.b, minMix);
+  } else {
+    newColor.b = mix(color.b, lineColor.b, maxMix);
+  }
+  return newColor;
 }
 
+void main() {
+  vec2 uv = vTexCoord;
+  vec3 color;
+  float i;
+  uv.y = 1.0 - uv.y;
+  //Invierte la posicion de la cordenada  para que la imagen no quede alrreves
+  vec4 tex = texture2D(u_img, uv);
 
-function draw() {
-	background(220);
-	illusion();
-}
+  if(abs(uv.y - uv.x) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.05) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.1) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.15) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.2) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.25) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.3) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.35) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.4) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.45) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.5) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.55) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.6) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.65) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.7) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x - 0.05) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.1) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.15) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.2) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else {
+    color = tex.rgb;
+  }
 
-function illusion() {
-	push();
-	translate( 320 , 160);
-	uno();
-	pop();
-	push();
-	translate( 610 , 160);
-	dos();
-	pop();
-	push();
-	translate( 610 , 450);
-	uno();
-	pop();
-	push();
-	translate( 320 , 450);
-	dos();
-	pop();
-	angle += change;
-}  
+  if((uv.x <= 0.28 || uv.x >= 0.7) || (uv.y <= 0.1 || uv.y >= 0.6)){
+    color = tex.rgb;
+  }
 
-function uno() {
-	
-	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
-		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 0 + angle);
-		center();
-		} else if(c == 1){
-		rotate(HALF_PI * 1 - angle);
-		center();
-		} else if(c == 2){
-		rotate(HALF_PI * 3 - angle);
-		center();
-		} else if(c == 3){
-		rotate(HALF_PI * 2 + angle);
-		center();
-		}
-		pop();
-		c++;
-	}
-	}
-}
+  gl_FragColor = vec4(color, 1.0);
 
-function dos() {
-	
-	var i;
-	var j;
-	var c = 0;
-	for(i = -70; i <= 70; i+=140){
-	for(j = -70; j <= 70; j+=140){
-		push();
-		translate(j,i);
-		if(c == 0){
-		rotate(HALF_PI * 2 - angle);
-		center2();
-		} else if(c == 1){
-		rotate(HALF_PI * 3 + angle);
-		center2();
-		} else if(c == 2){
-		rotate(HALF_PI * 1 + angle);
-		center2();
-		} else if(c == 3){
-		rotate(HALF_PI * 0 - angle);
-		center2();
-		}
-		pop();
-		c++;
-	}
-	}
-}
-
-function center(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('red');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
-}
-
-function center2(){
-	stroke('yellow');
-	strokeWeight(5);
-	fill('green');
-	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
-}
-
-function keyPressed() {
-	if (key === '0') {
-	change = 0;
-	} else if (key === '1') { 
-	change = 0.005;
-	}
 }
 											</code>
 										</pre>

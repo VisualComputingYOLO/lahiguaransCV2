@@ -72,38 +72,37 @@
 										</p>
 
 										<p>
-											La ilusión del <strong>Triángulo de Kanizsa</strong> nos hace darnos cuenta de la forma
-											en que funcionan nuestros sistemas visuales, que no notamos en nuestra
-											experiencia diaria. Al mirar la figura, la mayoría de la gente tendrá
-											la experiencia visual de un contorno de brillo aparente que define un
-											triángulo vertical que ocluye tres discos negros y un segundo triángulo
-											invertido delineado en negro. Por supuesto, estos triángulos de hecho
-											no existen, y no estamos percibiendo discos ocluidos sino más bien
-											fragmentos de discos parecidos a 'Pac-Man'. ('Pacmen' es ahora la
-											nomenclatura estándar para tales elementos inductores). Un relleno
-											ilusorio similar'de color que experimentamos en el triángulo vertical,
-											de modo que la figura aparece llena de un blanco sólido que es más
-											brillante que el resto de la figura, también es muy evidente en el
-											cuadrado de Kanizsa. Tenga en cuenta que tanto el triángulo
-											de Kanizsa como el cuadrado de Kanizsa crean una ilusión de profundidad:
-											la figura central parece sentarse en un plano más alto que el pacmen
-											inductor (o el triángulo ocluido que apunta hacia abajo).
+											<strong>Transfer Learning</strong> o aprendizaje por transferencia actualmente es muy popular en el aprendizaje profundo porque puede entrenar redes neuronales profundas con relativamente pocos datos.
+											Esto es muy útil ya que la mayoría de los problemas del mundo real no suelen tener millones de puntos de datos etiquetados para entrenar modelos tan complejos.
+											En el aprendizaje por transferencia, el conocimiento de un modelo de aprendizaje automático ya entrenado se aplica a un problema diferente pero relacionado.
+											Con el aprendizaje por transferencia, básicamente intentamos aprovechar lo aprendido en una tarea para mejorar la generalización en otra.
+											Transferimos los pesos que una red ha aprendido en la "tarea A" a una nueva "tarea B".
+											El aprendizaje por transferencia se utiliza principalmente en tareas de procesamiento de lenguaje natural y visión por computadora, como el análisis de sentimientos, debido a la gran cantidad de poder computacional requerido.
 										</p>
+
+										<br>
 
 										<div class="text-center">
-											<img src="images/35_kanizsa_main.png" style="height: 220px;vertical-align: middle"/>
+											<img src="images/tranferlearning1.png" style="height: 350px;vertical-align: middle"/>
 										</div>
 
+										<br>
+
 										<p>
-											Es denominada así en honor a su descubridor, el artista y psícólogo italiano
-											<a href="https://en.wikipedia.org/wiki/Gaetano_Kanizsa" target="_blank">Gaetano Kanizsa</a>
-											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
-											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
-											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
-											impresión de que surgen manchas "fantasmas" en las intersecciones de 
-											las líneas. Las manchas desaparecen cuando se observa directamente la
-											 intersección. Eso explica por qué se ven puntos en la intersección.
+											VGG16 es un modelo de red neuronal convolucional propuesto por K. Simonyan y A. Zisserman de la Universidad de Oxford en el artículo "Redes convolucionales muy profundas para el reconocimiento de imágenes a gran escala".
+											El modelo alcanza una precisión de prueba del 92,7% entre los 5 primeros en ImageNet, que es un conjunto de datos de más de 14 millones de imágenes que pertenecen a 1000 clases.
+											Fue uno de los modelos famosos presentados a ILSVRC-2014.
+											Realiza la mejora sobre AlexNet al reemplazar filtros de gran tamaño de kernel (11 y 5 en la primera y segunda capa convolucional, respectivamente) con múltiples filtros de tamaño de kernel de 3 × 3 uno tras otro.
+											VGG16 se entrenó durante semanas y estaba usando NVIDIA Titan Black GPU.
 										</p>
+
+										<br>
+
+										<div class="text-center">
+											<img src="images/tranferlearning2.png" style="height: 350px;vertical-align: middle"/>
+										</div>
+
+										<br>
 
 										<p>
 											Agradecemos a

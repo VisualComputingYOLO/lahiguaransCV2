@@ -12,6 +12,10 @@ float maxMix = (0.6);
 float minMix = (0.2);
 float lineWidth = 0.008;
 float lineWidthHalf = lineWidth/2.0;
+uniform float izq;
+uniform float derecha;
+uniform float arriba;
+uniform float abajo;
 
 float grid(vec2 st, float res)
 {
@@ -51,11 +55,11 @@ void main() {
   //Invierte la posicion de la cordenada  para que la imagen no quede alrreves
   vec4 tex = texture2D(u_img, uv);
 
-  vec2 grid_uv = uv.xy * 90.0; // scale
-  float x = grid(grid_uv, 0.4);
+  vec2 grid_uv = uv.xy * 100.0; // scale
+  float x = grid(grid_uv, 0.3);
   color = orangeColor(tex.rgb, x);  
 
-  if((uv.x <= 0.28 || uv.x >= 0.7) || (uv.y <= 0.1 || uv.y >= 0.6)){
+  if((uv.x <= izq || uv.x >= derecha) || (uv.y <= arriba || uv.y >= abajo)){
     color = tex.rgb;
   }
 

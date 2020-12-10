@@ -3,6 +3,10 @@ let shaderTexture;
 let img;
 let slider;
 let gray = 0;
+let izq = 134.0;
+let derecha = 323.0;
+let arriba = 55.0;
+let abajo = 273.0;
 
 function preload(){
   img = loadImage('https://cors-anywhere.herokuapp.com/https://i.pinimg.com/originals/97/8c/89/978c89a6ad573b6c7eb38e75b98ec6c2.png');
@@ -33,6 +37,10 @@ function Project() {
 
   // Valores uniform para el fragment shader
   theShader.setUniform("u_img", img);
+  theShader.setUniform("izq", izq / img.width);
+  theShader.setUniform("derecha", derecha / img.width);
+  theShader.setUniform("arriba", arriba / img.height);
+  theShader.setUniform("abajo", abajo / img.height);
   /* theShader.setUniform("u_key", gray); */
   
   // Renderizar el shader

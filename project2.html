@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 	<head>
 		<title>Luis Alejandro Higuaran Serrano | :: Computación Visual ::</title>
@@ -17,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/examples/squareMouse.js"></script>
+		<script src="p5/js/illusions/kanizsa.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -64,55 +63,58 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">MOUSEX, MOUSEY</a></h2>
-											<h3>PROCESSING EXAMPLES -  P5.JS EXAMPLES</h3>
+											<h2><a href="https://www.patreon.com/posts/color-grid-28734535" target="_blank">FACE ILLUSION</a></h2>
+											<h3>PROJECT -  P5.JS</h3>
 										</header>
 										<p>
-											Los siguientes ejemplos tienen el propósito de desarrollar y practicar la transición
-											entre el lenguaje Processing y el lenguaje p5.js observando sus principales diferencias,
-											ya que ambos lenguajes se ven muy similar, y cómo convertir de uno a otro.
+											En la siguiente publicación se vera el desarrollo de nuestro proyecto 
+											<strong>Reconocimiento facial con ilusiones opticas</strong>
 										</p>
 
 										<p>
-											Este programa esta basado en un sketch básico realizado por el sitio web
-											<a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">mywonderland.es</a>
-											, en el lenguaje Processing, con el fin de observar un ejemplo en el
-											que se utilizan las funciones 'mouseX, mouseY'. Crea una ventana con un ancho de 600px y una
-											altura de 400px, y luego empieza a dibujar un cuadrado azul de 50px por 50px según la posición
-											del mouse <img src="images/keyboard/pointer.png" style="width:1.5%;vertical-align: middle"/>
-											al mismo tiempo que el fondo de la ventana se va rellenando de color gris, dando la ilusión que
-											solo existe un cuadrado azul moviéndose por toda la ventana siguiendo al mouse.
+											La ilusión del <strong>Triángulo de Kanizsa</strong> nos hace darnos cuenta de la forma
+											en que funcionan nuestros sistemas visuales, que no notamos en nuestra
+											experiencia diaria. Al mirar la figura, la mayoría de la gente tendrá
+											la experiencia visual de un contorno de brillo aparente que define un
+											triángulo vertical que ocluye tres discos negros y un segundo triángulo
+											invertido delineado en negro. Por supuesto, estos triángulos de hecho
+											no existen, y no estamos percibiendo discos ocluidos sino más bien
+											fragmentos de discos parecidos a 'Pac-Man'. ('Pacmen' es ahora la
+											nomenclatura estándar para tales elementos inductores). Un relleno
+											ilusorio similar'de color que experimentamos en el triángulo vertical,
+											de modo que la figura aparece llena de un blanco sólido que es más
+											brillante que el resto de la figura, también es muy evidente en el
+											cuadrado de Kanizsa. Tenga en cuenta que tanto el triángulo
+											de Kanizsa como el cuadrado de Kanizsa crean una ilusión de profundidad:
+											la figura central parece sentarse en un plano más alto que el pacmen
+											inductor (o el triángulo ocluido que apunta hacia abajo).
 										</p>
-										<div class="canvasp5js" >
-											<div>
-												<div id="squareMouse"></div>												
-											</div>
+
+										<div class="text-center">
+											<img src="images/35_kanizsa_main.png" style="height: 220px;vertical-align: middle"/>
 										</div>
-										<p></p>
-										<h4>p5*js Code</h4>
 
-										<pre>
-											<code class="prettyprint">									
-function setup() { 
-	createCanvas(600, 400);
-} 
+										<p>
+											Es denominada así en honor a su descubridor, el artista y psícólogo italiano
+											<a href="https://en.wikipedia.org/wiki/Gaetano_Kanizsa" target="_blank">Gaetano Kanizsa</a>
+											(1971-1998). La ilusión de la cuadrícula de Hermann fue observada por
+											Ludimar Hermann en 1870. Es muy similar a la anterior, cuando se mira
+											un dibujo con una cuadrícula blanca sobre un fondo negro, se tiene la
+											impresión de que surgen manchas "fantasmas" en las intersecciones de 
+											las líneas. Las manchas desaparecen cuando se observa directamente la
+											 intersección. Eso explica por qué se ven puntos en la intersección.
+										</p>
 
-function draw(){ 
-	// Dibuja un nuevo background en cada frame
-	background(210);
-	stroke(0);
-	fill(0,0,255);
-	// En modo CENTER, el rectángulo se dibuja en el centro del cursor
-	rectMode(CENTER);
-	// mouseX y mouseY posición del ratón
-	rect(mouseX,mouseY,50,50);
-}
-											</code>
-										</pre>
+										<p>
+											Agradecemos a
+											<a href="https://medium.com/@naziafakhruddin" target="_blank">Nazia Fakhruddin</a>
+											por las bases para este trabajo.
+										</p>
+									
 										<!-- Pagination -->
 										<div class="pagination">
-											<a href="" class="button-large disable">Previous Page</a>
-											<a href="Example2.html" target="_parent" class="button-large">Next Page</a>
+											<a href="project1.html" class="button-large">Previous Page</a>
+											<a href="" target="_parent" class="button-large disable">Next Page</a>
 										</div>
 									</section>
 							</div>

@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 	<head>
 		<title>Luis Alejandro Higuaran Serrano | :: Computación Visual ::</title>
@@ -17,7 +16,7 @@
 		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script> -->
 
 		<!-- Ejemplos P5.js -->
-		<script src="p5/js/examples/squareMouse.js"></script>
+		<script src="p5/js/illusions/kanizsa.js"></script>
 
 		<!-- Bootstrap CSS 
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
@@ -64,28 +63,19 @@
 								<!-- Main Content -->
 									<section>
 										<header>
-											<h2><a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">MOUSEX, MOUSEY</a></h2>
-											<h3>PROCESSING EXAMPLES -  P5.JS EXAMPLES</h3>
+											<h2><a href="https://www.patreon.com/posts/color-grid-28734535" target="_blank">FACE ILLUSION</a></h2>
+											<h3>PROJECT -  P5.JS</h3>
 										</header>
 										<p>
-											Los siguientes ejemplos tienen el propósito de desarrollar y practicar la transición
-											entre el lenguaje Processing y el lenguaje p5.js observando sus principales diferencias,
-											ya que ambos lenguajes se ven muy similar, y cómo convertir de uno a otro.
+											En la siguiente publicación se vera el desarrollo de nuestro proyecto 
+											<strong>Reconocimiento facial con ilusiones opticas</strong>
 										</p>
 
-										<p>
-											Este programa esta basado en un sketch básico realizado por el sitio web
-											<a href="http://www.mywonderland.es/curso_js/processing/pro_ejemplos.html" target="_blank">mywonderland.es</a>
-											, en el lenguaje Processing, con el fin de observar un ejemplo en el
-											que se utilizan las funciones 'mouseX, mouseY'. Crea una ventana con un ancho de 600px y una
-											altura de 400px, y luego empieza a dibujar un cuadrado azul de 50px por 50px según la posición
-											del mouse <img src="images/keyboard/pointer.png" style="width:1.5%;vertical-align: middle"/>
-											al mismo tiempo que el fondo de la ventana se va rellenando de color gris, dando la ilusión que
-											solo existe un cuadrado azul moviéndose por toda la ventana siguiendo al mouse.
-										</p>
 										<div class="canvasp5js" >
 											<div>
-												<div id="squareMouse"></div>												
+												<p style="text-align: center;">
+													<iframe src="p5/js/shaders/project/index.html" style="height:500px;width:900px;text-align: center;"></iframe>
+												</p>
 											</div>
 										</div>
 										<p></p>
@@ -93,26 +83,125 @@
 
 										<pre>
 											<code class="prettyprint">									
-function setup() { 
-	createCanvas(600, 400);
-} 
+let opa = 255;
+let radio = 50;
+let angle = 0;
+let change = 0;
 
-function draw(){ 
-	// Dibuja un nuevo background en cada frame
-	background(210);
-	stroke(0);
-	fill(0,0,255);
-	// En modo CENTER, el rectángulo se dibuja en el centro del cursor
-	rectMode(CENTER);
-	// mouseX y mouseY posición del ratón
-	rect(mouseX,mouseY,50,50);
+function setup() {
+	var myCanvas = createCanvas(1000, 600);
+	myCanvas.parent('kanizsa');
+}
+
+
+function draw() {
+	background(220);
+	illusion();
+}
+
+function illusion() {
+	push();
+	translate( 320 , 160);
+	uno();
+	pop();
+	push();
+	translate( 610 , 160);
+	dos();
+	pop();
+	push();
+	translate( 610 , 450);
+	uno();
+	pop();
+	push();
+	translate( 320 , 450);
+	dos();
+	pop();
+	angle += change;
+}  
+
+function uno() {
+	
+	var i;
+	var j;
+	var c = 0;
+	for(i = -70; i <= 70; i+=140){
+	for(j = -70; j <= 70; j+=140){
+		push();
+		translate(j,i);
+		if(c == 0){
+		rotate(HALF_PI * 0 + angle);
+		center();
+		} else if(c == 1){
+		rotate(HALF_PI * 1 - angle);
+		center();
+		} else if(c == 2){
+		rotate(HALF_PI * 3 - angle);
+		center();
+		} else if(c == 3){
+		rotate(HALF_PI * 2 + angle);
+		center();
+		}
+		pop();
+		c++;
+	}
+	}
+}
+
+function dos() {
+	
+	var i;
+	var j;
+	var c = 0;
+	for(i = -70; i <= 70; i+=140){
+	for(j = -70; j <= 70; j+=140){
+		push();
+		translate(j,i);
+		if(c == 0){
+		rotate(HALF_PI * 2 - angle);
+		center2();
+		} else if(c == 1){
+		rotate(HALF_PI * 3 + angle);
+		center2();
+		} else if(c == 2){
+		rotate(HALF_PI * 1 + angle);
+		center2();
+		} else if(c == 3){
+		rotate(HALF_PI * 0 - angle);
+		center2();
+		}
+		pop();
+		c++;
+	}
+	}
+}
+
+function center(){
+	stroke('yellow');
+	strokeWeight(5);
+	fill('red');
+	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
+}
+
+function center2(){
+	stroke('yellow');
+	strokeWeight(5);
+	fill('green');
+	arc(0, 0, 100, 100, PI / 2, ( 2 * PI));
+}
+
+function keyPressed() {
+	if (key === '0') {
+	change = 0;
+	} else if (key === '1') { 
+	change = 0.005;
+	}
 }
 											</code>
 										</pre>
 										<!-- Pagination -->
 										<div class="pagination">
 											<a href="" class="button-large disable">Previous Page</a>
-											<a href="Example2.html" target="_parent" class="button-large">Next Page</a>
+											<a href="project2.html" target="_parent" class="button-large">Next Page</a>
 										</div>
 									</section>
 							</div>

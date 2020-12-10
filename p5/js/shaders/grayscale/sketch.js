@@ -91,7 +91,7 @@ function draw() {
   //Se pasa el shader del video como textura
   texture(shaderVideo);
   translate(0, 0, -100);
-  plane(900,500);
+  plane(width,height);
   pop();  
 }
 

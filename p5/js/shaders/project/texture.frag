@@ -13,6 +13,10 @@ float minMix = (0.2);
 float lineWidth = 0.008;
 float lineWidthHalf = lineWidth/2.0;
 
+/* float line(vec2 A){
+  vec2 point1 = vec2(A.x, A.y);
+} */
+
 // Funcion para convertir un color a escala de grises
 vec3 orangeColor(vec3 color) {
   vec3 newColor;
@@ -38,24 +42,56 @@ void main() {
   vec2 uv = vTexCoord;
   vec3 color;
   float i;
-  //Invierte la posicion de la cordenada  para que la imagen no quede alrreves
   uv.y = 1.0 - uv.y;
+  //Invierte la posicion de la cordenada  para que la imagen no quede alrreves
   vec4 tex = texture2D(u_img, uv);
 
-  for(i = 0.0; i <= 1.0; i+=0.2){
-    vec2 point1 = vec2(i, 1.0 - i);
-    vec2 point2 = vec2((i + 0.1),(1.0 - i) + 0.1);
+  if(abs(uv.y - uv.x) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.05) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.1) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.15) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.2) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.25) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.3) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.35) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.4) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.45) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.5) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.55) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.6) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.65) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x + 0.7) <= lineWidth){
+    color = orangeColor(tex.rgb);
+  } else if(abs(uv.y - uv.x - 0.05) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.1) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.15) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else if(abs(uv.y - uv.x - 0.2) <= lineWidth){
+    color = orangeColor(tex.rgb); 
+  } else {
+    color = tex.rgb;
+  }
 
-    float m = (point1.y - point2.y)/(point1.x - point2.x);
-    float c = point1.y - m*point1.x;
-    vec2 line = vec2((uv.y-c)/m, uv.x*m+c);
-
-    if((uv.y > line.y-lineWidthHalf && uv.y < line.y+lineWidthHalf) || (uv.x > line.x-lineWidthHalf && uv.x < line.x+lineWidthHalf)){
-      color = orangeColor(tex.rgb);
-    } else {
-      color = tex.rgb;
-    }
+  if((uv.x <= 0.28 || uv.x >= 0.7) || (uv.y <= 0.1 || uv.y >= 0.6)){
+    color = tex.rgb;
   }
 
   gl_FragColor = vec4(color, 1.0);
+
 }
